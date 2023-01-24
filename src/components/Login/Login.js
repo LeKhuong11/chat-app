@@ -5,14 +5,16 @@ import { useUserrAuth } from '../../context/UserAuthContext'
 
 function Login() {
   const [ error, setError ] = useState("");
-  const { googleSignIn, user } = useUserrAuth();
+  const { googleSignIn } = useUserrAuth();
 
   const handleCLickLogin = async (e) => {
     e.preventDefault();
-    await googleSignIn();
+    try {
+      await googleSignIn();
+    } catch(err) {
+      setError(err)
+    }
   }
-
-  console.log(user);
   return (
     <div>
         <Row justify="center" style={{height: 400}}>

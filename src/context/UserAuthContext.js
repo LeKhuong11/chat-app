@@ -26,6 +26,7 @@ export function UserAuthContextProvider({ children }) {
 
     useEffect(()=> {
         const unSub = auth.onAuthStateChanged((currentUser) => {
+            setLoading(false)
             if(currentUser) {
               const { displayName, email, uid, photoURL } = currentUser;
                 setUser({
@@ -34,7 +35,6 @@ export function UserAuthContextProvider({ children }) {
                     uid,
                     photoURL
                 })
-                setLoading(false)
                 navigate('/')
             }
             else {
