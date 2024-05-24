@@ -1,0 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+.App {
+    background: linear-gradient(90deg, #062b91 0%, #0e43b6 35%, rgb(46, 217, 252) 100%);
+}
