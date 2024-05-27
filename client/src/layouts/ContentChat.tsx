@@ -27,7 +27,7 @@ function ContentChat() {
                 </div>
             </div>
 
-            <div className="center h-3/4 overflow-scroll overflow-x-hidden flex flex-col">
+            <div className="center h-4/5 overflow-scroll overflow-x-hidden flex flex-col">
                 <div className="message w-9/12 flex items-start my-2">
                     <img src={avatar} alt="Avaatar" className='rounded-full w-9 mr-2' />
                     <div>
@@ -69,6 +69,22 @@ function ContentChat() {
                             <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
                         </div>
                         <p className='text-white text-xs'>1 min ago</p>
+                    </div>
+                </div>
+                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
+                    <div>
+                        <div className="texts bg-sky-500 rounded-md rounded-ee-none p-2">
+                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
+                        </div>
+                        <p className='text-white text-xs text-end'>1 min ago</p>
+                    </div>
+                </div>
+                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
+                    <div>
+                        <div className="texts bg-sky-500 rounded-md rounded-ee-none p-2">
+                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
+                        </div>
+                        <p className='text-white text-xs text-end'>1 min ago</p>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,16 @@
 import express, { Request, Response } from 'express';
+import userModel from '../Models/UserModel';
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-import userModel from '../Models/UserModel';
+const jwt = require('jsonwebtoken');
+
+
+
+const createToken = (_id: string) => {
+    const jwtKey = process.env.JWT_SECRET_KEY;
+
+    return jwt.sign({_id}, jwtKey, {expiresIn: '1d'});
+}
 
 const userController = {
     register: async (req: Request, res: Response) => {
@@ -27,8 +36,12 @@ const userController = {
             user.password = await bcrypt.hash(password, salt);
     
             await user.save();
+            // const token = createToken(user._id as string);   
     
-            const userResponse = { ...user.toObject(), password: undefined };
+            const userResponse = { 
+                ...user.toObject(), 
+                password: undefined,
+            };
     
             return res.status(201).json(userResponse);
         } catch (error) {
@@ -38,11 +51,8 @@ const userController = {
 
     login: async (req: Request, res: Response) => {
         try {
-            const { email, password } = req.body;
+            const { email, password } = req.query;
             const user = await userModel.findOne({ email });
-
-            console.log(user);
-            
 
             if(user) {
                 const validPassword = await bcrypt.compare(password, user.password);
@@ -50,13 +60,36 @@ const userController = {
                 if(!validPassword) {
                     return res.status(401).json({ message: 'Wrong password!'}); 
                 }
-                const userResponse = { ...user.toObject(), password: undefined };
+                const token = createToken(user._id as string);
+
+                const userResponse = { 
+                    ...user.toObject(), 
+                    password: undefined,
+                    token
+                };
 
                 res.status(200).json({ message: 'Login successfully', user: userResponse})
             } else {
                 res.status(401).json({message: 'This email is not registered'})
             }
             
+        } catch (error) {
+            return res.status(500).json({ message: 'Server errors' });
+        }
+    },
+
+    searchUsers: async (req: Request, res: Response) => {
+        try {
+            const { keyword } = req.query;
+
+            const users = await userModel.find({ 
+                $or: [
+                    { name: { $regex: keyword, $options: 'i' } },
+                    { email: { $regex: keyword, $options: 'i' } }
+                ]
+             }).select('-password');
+
+            res.status(200).json({users});
         } catch (error) {
             return res.status(500).json({ message: 'Server errors' });
         }
