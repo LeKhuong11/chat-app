@@ -52,8 +52,9 @@ const userController = {
     login: async (req: Request, res: Response) => {
         try {
             const { email, password } = req.query;
+            
             const user = await userModel.findOne({ email });
-
+            
             if(user) {
                 const validPassword = await bcrypt.compare(password, user.password);
 
