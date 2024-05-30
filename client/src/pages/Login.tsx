@@ -21,6 +21,8 @@ function Login() {
         login(userCredentials)
             .then(data => {
                 navigate('/');
+                console.log(data);
+                
                 notification.success({
                     message: 'Login successfully!',
                     description: 'Welcome to Chat App!'
