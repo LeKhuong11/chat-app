@@ -1,17 +1,17 @@
 import express, { Express, Request, Response } from 'express';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
-import mongoose, { ConnectOptions } from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import userRoute from './Routes/userRoute';
+import userRoute from './routes/userRoute';
+import connectToDatabase from './config/database';
 
-dotenv.config();
 
 const app: Express = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3002;
-const mongooseUri: string = process.env.MONGOOSE_URI || '';
+dotenv.config();
+
 
 app.use(cors({
   origin: '*',
@@ -25,15 +25,8 @@ const io = new SocketIOServer(server, {
   }
 });
 
-mongoose.connect(mongooseUri, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
-  .then(() => {
-    console.log('Connected to MongoDB successfully');
-  })
-  .catch((err) => {
-    console.error('Error connecting to MongoDB:', err);
-  });
-
 server.listen(PORT, () => {
+  connectToDatabase();
   console.log(`Server listening on port ${PORT}`);
 });
 

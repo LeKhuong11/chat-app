@@ -1,19 +1,16 @@
-import express, { Request, Response } from 'express';
-import userModel from '../Models/UserModel';
+import { Request, Response } from 'express';
+import userModel from '../models/UserModel';
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+class UserController {
+    static createToken(_id: string) {
+        const jwtKey = process.env.JWT_SECRET_KEY;
+        return jwt.sign({_id}, jwtKey, {expiresIn: '1d'});
+    }
 
-
-const createToken = (_id: string) => {
-    const jwtKey = process.env.JWT_SECRET_KEY;
-
-    return jwt.sign({_id}, jwtKey, {expiresIn: '1d'});
-}
-
-const userController = {
-    register: async (req: Request, res: Response) => {
+    static async register(req: Request, res: Response) {
         try {
             const { name, email, password } = req.query; 
 
@@ -36,7 +33,6 @@ const userController = {
             user.password = await bcrypt.hash(password, salt);
     
             await user.save();
-            // const token = createToken(user._id as string);   
     
             const userResponse = { 
                 ...user.toObject(), 
@@ -47,9 +43,9 @@ const userController = {
         } catch (error) {
             return res.status(500).json({ message: 'Server errors' });
         }
-    },
+    }
 
-    login: async (req: Request, res: Response) => {
+    static async login(req: Request, res: Response) {
         try {
             const { email, password } = req.query;
             
@@ -61,7 +57,7 @@ const userController = {
                 if(!validPassword) {
                     return res.status(401).json({ message: 'Wrong password!'}); 
                 }
-                const token = createToken(user._id as string);
+                const token = UserController.createToken(user._id as string);
 
                 const userResponse = { 
                     ...user.toObject(), 
@@ -77,9 +73,9 @@ const userController = {
         } catch (error) {
             return res.status(500).json({ message: 'Server errors' });
         }
-    },
+    }
 
-    searchUsers: async (req: Request, res: Response) => {
+    static async searchUsers(req: Request, res: Response) {
         try {
             const { keyword } = req.query;
 
@@ -95,6 +91,6 @@ const userController = {
             return res.status(500).json({ message: 'Server errors' });
         }
     }
-};
+}
 
-export default userController;
+export default UserController;
