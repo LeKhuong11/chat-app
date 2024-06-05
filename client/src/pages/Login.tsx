@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
-import { login } from '../apis/user'
+import UserApi from '../apis/user'
 import { IuserLogin } from "../types/user";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 
+const userApi = new UserApi();
 
 function Login() {
     const [ userLogin, setUserLogin ] = useState<IuserLogin>({ email: '', password: '' });
@@ -18,7 +18,7 @@ function Login() {
             password: userLogin.password || ''
           };
 
-        login(userCredentials)
+          userApi.login(userCredentials)
             .then(data => {
                 navigate('/');
                 console.log(data);
