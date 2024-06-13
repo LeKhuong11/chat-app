@@ -1,11 +1,11 @@
 
 
-export type IuserLogin = {
+export type UserLogin = {
     email: string,
     password: string
 }
 
-export type IuserRegister = {
+export type UserRegister = {
     name: string,
     email: string,
     password: string

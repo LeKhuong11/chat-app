@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
-import { IuserRegister } from "../types/user";
+import { UserRegister } from "../types/user";
 import UserApi from "../apis/user";
 
 const userApi = new UserApi();
 
 function Register() {
-    const [ userRegister, setUserRegister ] = useState<IuserRegister>({name: '', email: '', password: ''});
+    const [ userRegister, setUserRegister ] = useState<UserRegister>({name: '', email: '', password: ''});
 
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        const userCredentials: IuserRegister = {
+        const userCredentials: UserRegister = {
             name: userRegister.name || '',
             email: userRegister.email || '',
             password: userRegister.password || ''

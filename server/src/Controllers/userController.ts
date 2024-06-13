@@ -5,12 +5,21 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 class UserController {
-    static createToken(_id: string) {
-        const jwtKey = process.env.JWT_SECRET_KEY;
-        return jwt.sign({_id}, jwtKey, {expiresIn: '1d'});
+    private jwtKey: string;
+
+    constructor() {
+        this.jwtKey =  process.env.JWT_SECRET_KEY || '';
     }
 
-    static async register(req: Request, res: Response) {
+    private createToken(_id: string): string {
+        return jwt.sign({ _id }, this.jwtKey, { expiresIn: '1d' });
+    }
+
+    private verifyToken(token: string) {
+        return jwt.verify(token, this.jwtKey);
+    }
+
+    public async register(req: Request, res: Response) {
         try {
             const { name, email, password } = req.query; 
 
@@ -45,7 +54,7 @@ class UserController {
         }
     }
 
-    static async login(req: Request, res: Response) {
+    public async login(req: Request, res: Response) {
         try {
             const { email, password } = req.query;
             
@@ -53,11 +62,11 @@ class UserController {
             
             if(user) {
                 const validPassword = await bcrypt.compare(password, user.password);
-
+                
                 if(!validPassword) {
                     return res.status(401).json({ message: 'Wrong password!'}); 
-                }
-                const token = UserController.createToken(user._id as string);
+                    }
+                    const token = this.createToken(user._id as string);
 
                 const userResponse = { 
                     ...user.toObject(), 
@@ -75,7 +84,7 @@ class UserController {
         }
     }
 
-    static async searchUsers(req: Request, res: Response) {
+    public async searchUsers(req: Request, res: Response) {
         try {
             const { keyword } = req.query;
 

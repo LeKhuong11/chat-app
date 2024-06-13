@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import UserApi from '../apis/user'
-import { IuserLogin } from "../types/user";
+import { UserLogin } from "../types/user";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
@@ -8,21 +8,22 @@ import { notification } from 'antd';
 const userApi = new UserApi();
 
 function Login() {
-    const [ userLogin, setUserLogin ] = useState<IuserLogin>({ email: '', password: '' });
+    const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const userCredentials: IuserLogin = {
+        const userCredentials: UserLogin = {
             email: userLogin.email || '',
             password: userLogin.password || ''
           };
 
           userApi.login(userCredentials)
-            .then(data => {
+            .then(res => {
                 navigate('/');
-                console.log(data);
+                console.log(res.user.token);
                 
+                sessionStorage.setItem('token', JSON.stringify(res.user.token));
                 notification.success({
                     message: 'Login successfully!',
                     description: 'Welcome to Chat App!'

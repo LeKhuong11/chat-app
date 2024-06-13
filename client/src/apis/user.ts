@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IuserLogin, IuserRegister } from '../types/user'
+import { UserLogin, UserRegister } from '../types/user'
 
 
 class UserApi {
@@ -9,7 +9,7 @@ class UserApi {
     this.apiUrl = process.env.API_URL || 'http://localhost:3002/api';
   }
 
-  async login({email, password}: IuserLogin) {
+  async login({email, password}: UserLogin) {
     try {
       const response = await axios.get(`${this.apiUrl}/user/login`, {
         params: {
@@ -22,7 +22,7 @@ class UserApi {
     }
   }
 
-  async register({name, email, password}: IuserRegister) {
+  async register({name, email, password}: UserRegister) {
     try {
       const response = await axios.get(`${this.apiUrl}/user/register`, {
         params: {
