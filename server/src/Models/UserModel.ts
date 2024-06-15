@@ -1,15 +1,13 @@
 import mongoose, { Document, Schema } from 'mongoose';
-
-interface IUser extends Document {
-    name: string;
-    email: string;
-    password: string;
-}
+import { User } from '../Types/User';
 
 const UserSchema: Schema = new Schema(
     {
-        name: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
+        name: { 
+            type: String, 
+            required: true 
+        },
+        email: { type: String, required: true, unique: false },
         password: { type: String, required: true, minlength: 3 }
     },
     {
@@ -17,6 +15,6 @@ const UserSchema: Schema = new Schema(
     }
 );
 
-const userModel = mongoose.model<IUser>('User', UserSchema);
+const userModel = mongoose.model<User>('User', UserSchema);
 
 export default userModel;

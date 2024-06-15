@@ -24,13 +24,15 @@ class UserApi {
 
   async register({name, email, password}: UserRegister) {
     try {
-      const response = await axios.get(`${this.apiUrl}/user/register`, {
+      const response = await axios.post(`${this.apiUrl}/user/register`, {
         params: {
           name, email, password
         }
       });
       return response.data;
     } catch(error) {
+      console.log(`error: ${error}`);
+      
       throw error;
     }
   }

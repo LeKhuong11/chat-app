@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
 import { UserRegister } from "../types/user";
 import UserApi from "../apis/user";
+import { notification } from "antd";
 
 const userApi = new UserApi();
 
 function Register() {
     const [ userRegister, setUserRegister ] = useState<UserRegister>({name: '', email: '', password: ''});
+    const navigate = useNavigate();
 
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -17,11 +19,24 @@ function Register() {
             email: userRegister.email || '',
             password: userRegister.password || ''
         };
+        
 
         userApi.register(userCredentials)
             .then(data => {
-
+                navigate('/login');
+                
+                notification.success({
+                    message: 'Register successfully!',
+                    description: 'Login to Chat!'
+                  });
             })
+            .catch(error => {
+                notification.warning({
+                    message: error.response.data.message,
+                    description: 'Login to Chat!'
+                  });
+                console.error('Register error:', error);
+            });
     }
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {

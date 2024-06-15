@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 
-const userApi = new UserApi();
 
 function Login() {
     const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
+    const userApi = new UserApi();
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -21,7 +21,6 @@ function Login() {
           userApi.login(userCredentials)
             .then(res => {
                 navigate('/');
-                console.log(res.user.token);
                 
                 sessionStorage.setItem('token', JSON.stringify(res.user.token));
                 notification.success({

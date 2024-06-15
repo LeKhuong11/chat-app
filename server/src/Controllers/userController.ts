@@ -1,33 +1,62 @@
 import { Request, Response } from 'express';
-import userModel from '../models/UserModel';
+import userModel from '../Models/UserModel';
+import JWT from "../Utils/jwtHelper";
+import UserService from '../Services/UserService';
+import { User, UserLogin } from '../Types/User';
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+require("dotenv").config();
+
 
 class UserController {
-    private jwtKey: string;
-
+    private JWT = new JWT();
+    private userService = new UserService();
+    
     constructor() {
-        this.jwtKey =  process.env.JWT_SECRET_KEY || '';
+        
     }
 
-    private createToken(_id: string): string {
-        return jwt.sign({ _id }, this.jwtKey, { expiresIn: '1d' });
-    }
+    
+    public async login (req: Request, res: Response) {
+        try {
+            const { email, password } = req.query as UserLogin;
+            
+            const user = await this.userService.getByEmail(email);
 
-    private verifyToken(token: string) {
-        return jwt.verify(token, this.jwtKey);
+            if(user) {
+                const validPassword = await bcrypt.compare(password, user.password);
+                
+                if(!validPassword) {
+                    return res.status(401).json({ message: 'Wrong password!'}); 
+                }
+                const token = this.JWT.createToken(user._id.toString());
+                    
+                const userResponse = {  
+                    ...user.toObject(), 
+                    password: undefined,
+                    token
+                };
+    
+                res.status(200).json({ message: 'Login successfully', user: userResponse})
+            } else {
+                res.status(401).json({message: 'This email is not registered'})
+            }
+            
+        } catch (error) {
+            return res.status(500).json({ message: `Server errors: ${error}` });
+        }
     }
 
     public async register(req: Request, res: Response) {
         try {
-            const { name, email, password } = req.query; 
+            const { name, email, password } = req.query as User;
 
             if (typeof password !== 'string' || password.length < 6) {
                 return res.status(400).json({ message: 'Invalid password' });
             }
 
-            let user = await userModel.findOne({ email });
+            let user = await this.userService.getByEmail(email);
+            
             if (user) {
                 return res.status(400).json({ message: 'User already exists!' });
             }
@@ -36,51 +65,16 @@ class UserController {
                 return res.status(400).json({ message: 'Invalid email' });
             }
 
-            user = new userModel({ name, email, password });
-            
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(password, salt);
-    
-            await user.save();
+            const newUser = await this.userService.createUser({name, email, password});
     
             const userResponse = { 
-                ...user.toObject(), 
+                ...newUser,
                 password: undefined,
             };
     
             return res.status(201).json(userResponse);
         } catch (error) {
-            return res.status(500).json({ message: 'Server errors' });
-        }
-    }
-
-    public async login(req: Request, res: Response) {
-        try {
-            const { email, password } = req.query;
-            
-            const user = await userModel.findOne({ email });
-            
-            if(user) {
-                const validPassword = await bcrypt.compare(password, user.password);
-                
-                if(!validPassword) {
-                    return res.status(401).json({ message: 'Wrong password!'}); 
-                    }
-                    const token = this.createToken(user._id as string);
-
-                const userResponse = { 
-                    ...user.toObject(), 
-                    password: undefined,
-                    token
-                };
-
-                res.status(200).json({ message: 'Login successfully', user: userResponse})
-            } else {
-                res.status(401).json({message: 'This email is not registered'})
-            }
-            
-        } catch (error) {
-            return res.status(500).json({ message: 'Server errors' });
+            return res.status(500).json({ message: `Server errors: ${error}` });
         }
     }
 
