@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { UserLogin } from "../types/user";
+import { UserLogin, UserProfile } from "../types/user";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
@@ -22,8 +22,8 @@ function Login() {
           userApi.login(userCredentials)
             .then(res => {
                 navigate('/');
-                
-                localStorage.setItem('token', JSON.stringify(res.user.token));
+
+                setUserToLocalStorage({name: res.user.name, email: res.user.email}, res.user.token);
                 notification.success({
                     message: 'Login successfully!',
                     description: 'Welcome to Chat App!'
@@ -102,5 +102,10 @@ function Login() {
         </section>  
     );
 };
+
+function setUserToLocalStorage(user: UserProfile, token: string) {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", JSON.stringify(token));
+}
 
 export default Login;

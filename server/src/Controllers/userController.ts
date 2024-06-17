@@ -29,7 +29,7 @@ class UserController {
                 if(!validPassword) {
                     return res.status(401).json({ message: 'Wrong password!'}); 
                 }
-                const token = this.JWT.createToken(user._id.toString());
+                const token = this.JWT.createToken(user._id);
                     
                 const userResponse = {  
                     ...user.toObject(), 
