@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
-import UserApi from '../apis/user'
 import { UserLogin } from "../types/user";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
+import UserApi from "../apis/User";
 
 
 function Login() {
     const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
     const userApi = new UserApi();
+
+    console.log(process.env.API_URL);
+    
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();

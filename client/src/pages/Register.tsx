@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
 import { useState } from "react";
 import { UserRegister } from "../types/user";
-import UserApi from "../apis/user";
+import UserApi from "../apis/User";
 import { notification } from "antd";
 
 const userApi = new UserApi();
@@ -10,6 +9,9 @@ const userApi = new UserApi();
 function Register() {
     const [ userRegister, setUserRegister ] = useState<UserRegister>({name: '', email: '', password: ''});
     const navigate = useNavigate();
+
+    console.log(process.env.PUBLIC_URL);
+    
 
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

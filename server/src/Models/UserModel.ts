@@ -1,7 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { User } from '../Types/User';
 
-const UserSchema: Schema = new Schema(
+
+const UserSchema: Schema = new Schema<User>(
     {
         name: { 
             type: String, 

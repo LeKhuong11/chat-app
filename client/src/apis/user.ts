@@ -9,7 +9,8 @@ class UserApi {
     this.apiUrl = process.env.API_URL || 'http://localhost:3002/api';
   }
 
-  async login({email, password}: UserLogin) {
+  public async login({email, password}: UserLogin) {
+    console.log(process.env.API_URL);
     try {
       const response = await axios.get(`${this.apiUrl}/user/login`, {
         params: {
@@ -22,7 +23,7 @@ class UserApi {
     }
   }
 
-  async register({name, email, password}: UserRegister) {
+  public async register({name, email, password}: UserRegister) {
     try {
       const response = await axios.post(`${this.apiUrl}/user/register`, {
         params: {
