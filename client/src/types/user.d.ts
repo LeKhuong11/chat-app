@@ -10,3 +10,14 @@ export type UserRegister = {
     email: string,
     password: string
 }
+
+export type UserProfile = {
+    name: string;
+    email: string;
+};
+
+export type UserContextType = {
+    user: UserProfile | null,
+    token: string,
+    isLoggedIn: boolean
+}

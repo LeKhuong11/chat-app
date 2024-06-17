@@ -4,15 +4,18 @@ import { PiVideoCameraFill } from "react-icons/pi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import UserChat from '../components/UserChat';
+import { useAuth } from '../context/AuthContext';
 
 function ListChat() {
+  const { user } = useAuth();
   const avatar = require('../assets/avatar.jpg');
+
   return (
     <div className="w-1/4 h-5/6 bg-gray-900 bg-opacity-50 backdrop-blur-strong rounded-lg mr-1 p-3">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <img className='rounded-full w-10' src={avatar} alt="Avatar" />
-          <h3 className='font-bold px-2 font-mono text-white'>Khuong</h3>
+          <h3 className='font-bold px-2 font-mono text-white'>{user?.name}</h3>
         </div>
         <div className="flex">
           <div className="px-3 cursor-pointer">
