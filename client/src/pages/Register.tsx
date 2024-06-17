@@ -9,8 +9,6 @@ const userApi = new UserApi();
 function Register() {
     const [ userRegister, setUserRegister ] = useState<UserRegister>({name: '', email: '', password: ''});
     const navigate = useNavigate();
-
-    console.log(process.env.PUBLIC_URL);
     
 
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {

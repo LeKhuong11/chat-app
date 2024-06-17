@@ -28,10 +28,13 @@ function HomePage() {
 }
 
 function getToken() {
-    const tokenString: string | null = sessionStorage.getItem('token');
+    const token: string | null = localStorage.getItem('token');
+
+    console.log(token);
     
-    if (tokenString) {
-        const userToken = JSON.parse(tokenString);
+    
+    if (token) {
+        const userToken = JSON.parse(token);
         return userToken;
     }
 

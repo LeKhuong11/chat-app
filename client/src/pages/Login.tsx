@@ -10,8 +10,6 @@ function Login() {
     const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
     const userApi = new UserApi();
-
-    console.log(process.env.API_URL);
     
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
@@ -25,7 +23,7 @@ function Login() {
             .then(res => {
                 navigate('/');
                 
-                sessionStorage.setItem('token', JSON.stringify(res.user.token));
+                localStorage.setItem('token', JSON.stringify(res.user.token));
                 notification.success({
                     message: 'Login successfully!',
                     description: 'Welcome to Chat App!'
