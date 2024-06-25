@@ -10,7 +10,6 @@ class UserApi {
   }
 
   public async login({email, password}: UserLogin) {
-    console.log(process.env.API_URL);
     try {
       const response = await axios.get(`${this.apiUrl}/user/login`, {
         params: {
@@ -26,10 +25,24 @@ class UserApi {
   public async register({name, email, password}: UserRegister) {
     try {
       const response = await axios.post(`${this.apiUrl}/user/register`, {
-        params: {
-          name, email, password
-        }
+        name,
+        email,
+        password
       });
+
+      return response.data;
+    } catch(error) {
+      throw error;
+    }
+  }
+
+  public async findUser(text: string) {
+    try {
+      const response = await axios.get(`${this.apiUrl}/user/find`, {
+        params: {
+          keyword: text
+        }
+      })
       return response.data;
     } catch(error) {
       console.log(`error: ${error}`);

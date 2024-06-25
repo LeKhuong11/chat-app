@@ -19,5 +19,6 @@ export type UserProfile = {
 export type UserContextType = {
     user: UserProfile | null,
     token: string,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    updateUserLogin: any
 }

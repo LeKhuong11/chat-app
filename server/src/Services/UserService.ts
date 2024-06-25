@@ -19,7 +19,18 @@ class UserService {
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new userModel({ name, email, password: hashedPassword });
         await newUser.save();
+
         return newUser.toObject();
+    }
+
+    public async findUsers(keyword: string) {
+        
+        return userModel.find({ 
+            $or: [
+                { name: { $regex: keyword, $options: 'i' } },
+                { email: { $regex: keyword, $options: 'i' } }
+            ]
+         }).select('-password');
     }
 }
 

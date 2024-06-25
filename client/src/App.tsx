@@ -1,16 +1,17 @@
 import { Router } from "./routes";
 import './App.css';
 import { UserContextProvider } from "./context/AuthContext";
+import React from "react";
 
 function App() {
   return (
-    <>
-      <UserContextProvider>
+    <React.StrictMode>
         <div className="App">
-          <Router />
+          <UserContextProvider>
+            <Router />
+          </UserContextProvider>
         </div>
-      </UserContextProvider>
-    </>
+    </React.StrictMode>
   );
 }
 

@@ -49,9 +49,9 @@ class UserController {
 
     public async register(req: Request, res: Response) {
         try {
-            const { name, email, password } = req.query as User;
-
-            if (typeof password !== 'string' || password.length < 6) {
+            const { name, email, password } = req.body as User;
+            
+            if (!password || password.length < 6) {
                 return res.status(400).json({ message: 'Invalid password' });
             }
 
@@ -65,7 +65,7 @@ class UserController {
                 return res.status(400).json({ message: 'Invalid email' });
             }
 
-            const newUser = await this.userService.createUser({name, email, password});
+            const newUser = await this.userService.createUser({ name, email, password});
     
             const userResponse = { 
                 ...newUser,
@@ -78,16 +78,11 @@ class UserController {
         }
     }
 
-    public async searchUsers(req: Request, res: Response) {
+    public async findUsers(req: Request, res: Response) {
         try {
-            const { keyword } = req.query;
+            const keyword = req.query.keyword as string;
 
-            const users = await userModel.find({ 
-                $or: [
-                    { name: { $regex: keyword, $options: 'i' } },
-                    { email: { $regex: keyword, $options: 'i' } }
-                ]
-             }).select('-password');
+            const users = await this.userService.findUsers(keyword);
 
             res.status(200).json({users});
         } catch (error) {

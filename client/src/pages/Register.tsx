@@ -19,10 +19,10 @@ function Register() {
             email: userRegister.email || '',
             password: userRegister.password || ''
         };
-        
+
 
         userApi.register(userCredentials)
-            .then(data => {
+            .then(res => {
                 navigate('/login');
                 
                 notification.success({
@@ -30,12 +30,11 @@ function Register() {
                     description: 'Login to Chat!'
                   });
             })
-            .catch(error => {
+            .catch(error => {   
                 notification.warning({
-                    message: error.response.data.message,
-                    description: 'Login to Chat!'
+                    message: 'Registration failed!',
+                    description: error.response.data.message
                   });
-                console.error('Register error:', error);
             });
     }
 
@@ -58,6 +57,7 @@ function Register() {
                     Chat App
                 </a>
                 <div className="w-full rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 bg-custom-bg">
+                    
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Register an account

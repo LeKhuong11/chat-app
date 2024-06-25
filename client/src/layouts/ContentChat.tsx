@@ -2,6 +2,7 @@ import React from 'react'
 import { IoMdCall } from 'react-icons/io';
 import { PiVideoCameraFill } from 'react-icons/pi';
 import { IoSend } from "react-icons/io5";
+import Message from '../components/Message';
 
 function ContentChat() {
     const avatar = require('../assets/avatar.jpg');
@@ -28,65 +29,19 @@ function ContentChat() {
             </div>
 
             <div className="center h-4/5 overflow-scroll overflow-x-hidden flex flex-col">
-                <div className="message w-9/12 flex items-start my-2">
-                    <img src={avatar} alt="Avaatar" className='rounded-full w-9 mr-2' />
-                    <div>
-                        <div className="texts bg-custom-bg p-2 rounded-ss-none rounded-md">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
-                    <div>
-                        <div className="texts bg-sky-500 rounded-md rounded-ee-none p-2">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs text-end'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-start my-2">
-                    <img src={avatar} alt="Avaatar" className='rounded-full w-9 mr-2' />
-                    <div>
-                        <div className="texts bg-custom-bg p-2 rounded-ss-none rounded-md">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
-                    <div>
-                        <div className="texts bg-sky-500 rounded-ee-none rounded-md p-2">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs text-end'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-start my-2">
-                    <img src={avatar} alt="Avaatar" className='rounded-full w-9 mr-2' />
-                    <div>
-                        <div className="texts bg-custom-bg p-2 rounded-ss-none rounded-md">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
-                    <div>
-                        <div className="texts bg-sky-500 rounded-md rounded-ee-none p-2">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs text-end'>1 min ago</p>
-                    </div>
-                </div>
-                <div className="message w-9/12 flex items-center self-end my-2 mx-3">
-                    <div>
-                        <div className="texts bg-sky-500 rounded-md rounded-ee-none p-2">
-                            <p className='text-white'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.</p>
-                        </div>
-                        <p className='text-white text-xs text-end'>1 min ago</p>
-                    </div>
-                </div>
+                <Message sentBy='other' avatar={avatar} content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+                
+                <Message sentBy='me' content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+                
+                <Message sentBy='other' avatar={avatar} content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+
+                <Message sentBy='me' content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+
+                <Message sentBy='other' avatar={avatar} content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+                
+                <Message sentBy='me' content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+                <Message sentBy='me' content='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio architecto doloremque sint eius quae rem necessitatibus voluptates. Distinctio quae, sunt nobis ipsa unde quidem alias quibusdam. Perspiciatis, dicta consequatur.' />
+
             </div>
 
             <div className='sendMessage flex py-3 justify-center border-t border-gray-600'>
