@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import userController from '../Controllers/UserController';
+import userController from '../Controllers/userController';
 
 const router: Router = express.Router();
 
@@ -12,6 +12,8 @@ router.post('/register', (req: Request, res: Response) => {
     userController.register(req, res);
 });
 
-router.get('/search', userController.searchUsers);
+router.get('/find', (req: Request, res: Response) => {
+    userController.findUsers(req, res);
+});
 
 export default router;

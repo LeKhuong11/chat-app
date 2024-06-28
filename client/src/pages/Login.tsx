@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { UserLogin, UserProfile } from "../types/user";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import UserApi from "../apis/User";
+import { UserContext } from "../context/AuthContext";
 
 
 function Login() {
     const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
+    const { updateUserLogin } = useContext(UserContext);
     const userApi = new UserApi();
     
 
@@ -21,13 +23,13 @@ function Login() {
 
           userApi.login(userCredentials)
             .then(res => {
-                navigate('/');
-
                 setUserToLocalStorage({name: res.user.name, email: res.user.email}, res.user.token);
+                updateUserLogin({name: res.user.name, email: res.user.email})
                 notification.success({
-                    message: 'Login successfully!',
+                    message: 'Login successfully!', 
                     description: 'Welcome to Chat App!'
-                  });
+                });
+                navigate('/');
             })
             .catch(error => {
                 console.error('Login error:', error);
