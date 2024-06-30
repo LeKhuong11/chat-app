@@ -1,24 +1,21 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoIosMore } from "react-icons/io";
 import { PiVideoCameraFill } from "react-icons/pi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import UserChat from '../components/UserChat';
-import { useAuth, UserContext } from '../context/AuthContext';
+import { UserContext } from '../context/AuthContext';
 import { AutoComplete, Modal } from 'antd';
 import { CloseSquareFilled } from '@ant-design/icons';
 import UserApi from '../apis/User';
-
-
-const mockVal = (str: string, repeat = 1) => ({
-  value: str.repeat(repeat),
-});
-
+import useDebounce from '../hooks/useDebounce';
 
 function ListChat() {
   const { user } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [options, setOptions] = useState<{ value: string }[]>([]);
+  const [searchText, setSearchText] = useState<{ value: string }>({value: ''});
+  const [usersFinded, setUserFinded] = useState<{label: String, value: string}[]>([]);
+  const debouncedValue = useDebounce(searchText, 500);
 
   const avatar = require('../assets/avatar.jpg');
   const userApi = new UserApi();
@@ -35,20 +32,30 @@ function ListChat() {
     setIsModalOpen(false);
   };
 
-  const getPanelValue = (searchText: string) => {
-    let users: any = [];
-    
-    if (searchText) {
-      userApi.findUser(searchText)
+  const handleFindUser = (value: string) => {
+    setSearchText({value});
+  }
+
+  const handleSelectedUser = (value: string) => {
+    setIsModalOpen(false);
+};
+
+  useEffect(() => {
+
+    if(searchText.value) {
+      userApi.findUser(searchText.value)
         .then( res => {
-          users = res.users
+          const transformedUsers = res.users.map((user: { name: string, _id: string, email: string }) => ({
+            value: `${user.name}(${user.email})`
+          }))
+          setUserFinded(transformedUsers)
         }).catch(error => {
           console.error('Login error:', error);
         });
     }
+    
+  }, [debouncedValue])
 
-    return !searchText ? [] : [mockVal('searchText'), mockVal('searchText', 2), mockVal('searchText', 3)];
-  }
 
   return (
     <div className="w-1/4 h-5/6 bg-gray-900 bg-opacity-50 backdrop-blur-strong rounded-lg mr-1 p-3">
@@ -76,9 +83,10 @@ function ListChat() {
         </div>
         <Modal title="Tìm kiếm bạn bè" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
           <AutoComplete
-            options={options}
+            options={usersFinded}
             style={{ width: '100%'}}
-            onSearch={(text) => setOptions(getPanelValue(text))}
+            onSearch={(value) => handleFindUser(value)}
+            onSelect={handleSelectedUser}
             placeholder="Nhập tên bạn bè"
             allowClear={{ clearIcon: <CloseSquareFilled /> }}
           />
