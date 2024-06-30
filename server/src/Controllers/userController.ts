@@ -82,6 +82,10 @@ class UserController {
         try {
             const keyword = req.query.keyword as string;
 
+            if (!keyword) {
+                return res.status(400).json({ message: 'No data found!' });
+            }
+
             const users = await this.userService.findUsers(keyword);
 
             res.status(200).json({users});

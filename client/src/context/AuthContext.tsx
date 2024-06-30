@@ -23,8 +23,6 @@ export function UserContextProvider({ children }: Props) {
     useEffect(() => {
         const users = localStorage.getItem("user");
         const tokens = localStorage.getItem("token");
-    
-        console.log(users, tokens);
 
         if (users && tokens) {
             setUser(JSON.parse(users));
