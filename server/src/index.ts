@@ -5,10 +5,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoute from './Routes/userRoute';
 import connectToDatabase from './config/database';
+import Socket from './config/socket';
 
 
 const app: Express = express();
 const server = http.createServer(app);
+const socket = new Socket(server);
 const PORT = process.env.PORT || 3002;
 dotenv.config();
 
@@ -27,6 +29,7 @@ const io = new SocketIOServer(server, {
 
 server.listen(PORT, () => {
   connectToDatabase();
+  socket.connect();
   console.log(`Server listening on port ${PORT}`);
 });
 
