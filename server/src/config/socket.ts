@@ -26,11 +26,9 @@ class Socket {
 
             socket.on('message', (data) => {
                 console.log(data);
-                socket.broadcast.emit('message', data)
+                socket.broadcast.emit('message', )
             })
         })
-
-        console.log('Connected socket: ', io);
     }
 }
 

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import userModel from '../Models/UserModel';
 import JWT from "../Utils/jwtHelper";
 import UserService from '../Services/UserService';
 import { User, UserLogin } from '../Types/User';
@@ -17,7 +16,7 @@ class UserController {
     }
 
     
-    public async login (req: Request, res: Response) {
+    public async login(req: Request, res: Response) {
         try {
             const { email, password } = req.query as UserLogin;
             

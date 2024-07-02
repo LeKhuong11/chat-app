@@ -32,7 +32,7 @@ function ContentChat() {
         const data = {
             room: '123',
             message: message
-        }s
+        }
         socket.emit('message', data)
 
         console.log(data);

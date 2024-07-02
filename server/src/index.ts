@@ -4,6 +4,7 @@ import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoute from './Routes/userRoute';
+import messageRoute from './Routes/messageRoute';
 import connectToDatabase from './config/database';
 import Socket from './config/socket';
 
@@ -34,6 +35,7 @@ server.listen(PORT, () => {
 });
 
 app.use("/api/user", userRoute);
+app.use("/api/message", messageRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to chat app API');
