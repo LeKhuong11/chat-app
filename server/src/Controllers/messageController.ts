@@ -20,9 +20,11 @@ class MessageController {
         }
     }
 
-    public async getMessage(req: Request, res: Response) {
+    public async getMessages(req: Request, res: Response) {
+        const { chatId } = req.params;
         try {
-            
+            const messages = await this.messageService.getMessages(chatId);
+            return res.status(200).json(messages);
         } catch(error) {
             return res.status(500).json({ message: `Server errors: ${error}` });
         }

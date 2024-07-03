@@ -1,4 +1,4 @@
-import messageModel from "../Models/messageModel";
+import messageModel from "../Models/MessageModel";
 import { Message } from "../Types/Message";
 
 
@@ -10,6 +10,14 @@ class MessageService {
             await message.save();
     
             return message.toObject();
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    public async getMessages(chatId: string) {
+        try {
+            return await messageModel.find({ chatId });
         } catch(error) {
             throw error;
         }

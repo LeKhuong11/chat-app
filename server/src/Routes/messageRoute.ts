@@ -5,6 +5,9 @@ const router: Router = express.Router();
 
 router.post('/create', (req: Request, res: Response) => {
     MessageController.createMessage(req, res);
+});
+router.get('/get-messages/:chatId', (req: Request, res: Response) => {
+    MessageController.getMessages(req, res);
 })
 
 export default router;

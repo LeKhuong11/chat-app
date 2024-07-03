@@ -4,9 +4,18 @@ import { Message } from "../Types/Message";
 
 const MessageSchema: Schema = new Schema(
     {
-        chatId: String,
-        senderId: String,
-        content: String
+        chatId: {
+            type: String,
+            require: true
+        },
+        senderId: {
+            type: String,
+            require: true
+        },
+        content: {
+            type: String,
+            require: true
+        }
     },
     {
         timestamps: true
