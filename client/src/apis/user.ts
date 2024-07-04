@@ -7,6 +7,7 @@ class UserApi {
 
   constructor() {
     this.apiUrl = process.env.API_URL || 'http://localhost:3002/api';
+    
   }
 
   public async login({email, password}: UserLogin) {
@@ -42,7 +43,8 @@ class UserApi {
         params: {
           keyword: text
         }
-      })
+      });
+      
       return response.data;
     } catch(error) {
       console.log(`error: ${error}`);
