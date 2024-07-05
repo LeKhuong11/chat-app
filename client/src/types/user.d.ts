@@ -17,14 +17,14 @@ export type UserProfile = {
 };
 
 export type UserContextType = {
-    user: User | null,
+    user: User,
     token: string,
     isLoggedIn: boolean,
     updateUserLogin: any
 }
 
 export type User = {
-    _id: String,
-    name: String,
-    email: String,
+    _id: string,
+    name: string,
+    email: string,
 }

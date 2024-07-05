@@ -52,6 +52,16 @@ class UserApi {
       throw error;
     }
   }
+
+  public async getUserById(userId: String) {
+    try {
+      const response = await axios.get(`${this.apiUrl}/user/get/${userId}`);
+
+      return response.data;
+    } catch(error) {
+      throw error;
+    }
+  }
 }
 
 export default UserApi;

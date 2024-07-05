@@ -10,7 +10,6 @@ import { CloseSquareFilled } from '@ant-design/icons';
 import UserApi from '../apis/User';
 import useDebounce from '../hooks/useDebounce';
 import { ChatContext } from '../context/ChatContext';
-import { ChatContextType, ChatType } from '../types/chat';
 
 const userApi = new UserApi();
 
@@ -23,8 +22,6 @@ function ListChat() {
   const debouncedValue = useDebounce(searchText, 500);
 
   const avatar = require('../assets/avatar.jpg');
-  console.log(chats);
-  
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -55,7 +52,7 @@ function ListChat() {
           }))
           setUserFinded(transformedUsers)
         }).catch(error => {
-          console.error('Login error:', error);
+          console.error('Error:', error);
         });
     }
     
@@ -106,7 +103,7 @@ function ListChat() {
             </div> : 
             chats?.map((item: any) => (
               <div key={item._id}>
-                <UserChat withUser='Kelvin' message='How are you today!' />
+                <UserChat chat={item} user={user} />
               </div>
             ))
         }
