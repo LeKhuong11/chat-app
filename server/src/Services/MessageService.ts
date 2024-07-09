@@ -15,9 +15,12 @@ class MessageService {
         }
     }
 
-    public async getMessages(chatId: string) {
+    public async getMessages(chatId: string, skip: number = 0, limit: number = 100) {
         try {
-            return await messageModel.find({ chatId });
+            return await messageModel.find({ chatId })
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
         } catch(error) {
             throw error;
         }

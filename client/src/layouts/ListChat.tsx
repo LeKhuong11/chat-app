@@ -15,7 +15,7 @@ const userApi = new UserApi();
 
 function ListChat() {
   const { user } = useContext(UserContext);
-  const { chats, isChatLoading } = useContext(ChatContext);
+  const { chats, isChatLoading, setCurrentChat } = useContext(ChatContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState<{ value: string }>({value: ''});
   const [usersFinded, setUserFinded] = useState<{label: String, value: string}[]>([]);
@@ -95,14 +95,14 @@ function ListChat() {
         </Modal>
       </div>
 
-      <div className='px-3'>
+      <div>
         {
           isChatLoading ? 
             <div className='flex justify-center items-center h-40'>
               <Spin></Spin>
             </div> : 
             chats?.map((item: any) => (
-              <div key={item._id}>
+              <div key={item._id} onClick={() => setCurrentChat(item)}>
                 <UserChat chat={item} user={user} />
               </div>
             ))

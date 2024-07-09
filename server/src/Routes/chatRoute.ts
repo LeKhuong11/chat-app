@@ -6,7 +6,7 @@ const router: Router = express.Router();
 router.post('/create', (req: Request, res: Response) => {
     ChatController.createChat(req, res);
 });
-router.get('/get-chats/:userId', (req: Request, res: Response) => {
+router.get('/get-chat/:userId', (req: Request, res: Response) => {
     ChatController.getChatsByUserId(req, res);
 });
 

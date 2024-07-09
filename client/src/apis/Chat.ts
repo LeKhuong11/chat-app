@@ -9,7 +9,7 @@ class ChatApi {
 
     public async getChats(userId: String) {
         try {
-            const response = await axios.get(`${this.apiUrl}/chat/get-chats/${userId}`);
+            const response = await axios.get(`${this.apiUrl}/chat/get-chat/${userId}`);
             return response.data;
         } catch(error) {
             console.log(error);

@@ -1,13 +1,19 @@
+import { MessageType } from "./message";
 
 
 export type ChatType = {
-    _id: String,
-    members: String[],
-    createdAt: String,
-    updatedAt: String,
+    _id: string,
+    members: string[],
+    createdAt: string,
+    updatedAt: string,
 }
 
 export type ChatContextType = {
     chats: Array,
-    isChatLoading: Boolean
+    isChatLoading: Boolean,
+    currentChat: SetStateAction<ChatType | undefined>,
+    setCurrentChat: Dispatch<SetStateAction<ChatType | undefined>>;
+    isMessageLoading: Boolean,
+    messages: MessageType[],
+    sendMessage: ({ message, userId, chatId }: MessageRequest)  => Promise<void>
 }
