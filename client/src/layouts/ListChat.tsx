@@ -10,12 +10,13 @@ import { CloseSquareFilled } from '@ant-design/icons';
 import UserApi from '../apis/User';
 import useDebounce from '../hooks/useDebounce';
 import { ChatContext } from '../context/ChatContext';
+import { ChatType } from '../types/chat';
 
 const userApi = new UserApi();
 
 function ListChat() {
   const { user } = useContext(UserContext);
-  const { chats, isChatLoading, setCurrentChat } = useContext(ChatContext);
+  const { chats, isChatLoading, handleSetCurrentChat } = useContext(ChatContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState<{ value: string }>({value: ''});
   const [usersFinded, setUserFinded] = useState<{label: String, value: string}[]>([]);
@@ -41,7 +42,7 @@ function ListChat() {
 
   const handleSelectedUser = (value: string) => {
     setIsModalOpen(false);
-};
+  };
 
   useEffect(() => {
     if(searchText.value) {
@@ -56,7 +57,7 @@ function ListChat() {
         });
     }
     
-  }, [debouncedValue])
+  }, [debouncedValue]);
 
 
   return (
@@ -101,8 +102,8 @@ function ListChat() {
             <div className='flex justify-center items-center h-40'>
               <Spin></Spin>
             </div> : 
-            chats?.map((item: any) => (
-              <div key={item._id} onClick={() => setCurrentChat(item)}>
+            chats?.map((item: ChatType) => (
+              <div key={item._id} onClick={() => handleSetCurrentChat(item)}>
                 <UserChat chat={item} user={user} />
               </div>
             ))

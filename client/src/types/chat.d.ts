@@ -15,5 +15,6 @@ export type ChatContextType = {
     setCurrentChat: Dispatch<SetStateAction<ChatType | undefined>>;
     isMessageLoading: Boolean,
     messages: MessageType[],
-    sendMessage: ({ message, userId, chatId }: MessageRequest)  => Promise<void>
+    sendMessage: ({ message, userId, chatId }: MessageRequest)  => Promise<void>,
+    handleSetCurrentChat: (item: ChatType) => Promise<void>
 }

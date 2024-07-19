@@ -17,17 +17,25 @@ class Socket {
                 origin: "*",
             }
         });
-
+            
         io.on('connection', (socket) => {
-            socket.emit("message", {
-                room: '123',
-                message: 'Hello world!!!!!'
-            });
 
             socket.on('message', (data) => {
                 console.log(data);
-                socket.broadcast.emit('message', )
+                io.to(data.room).emit('message', {
+                    room: data.room,
+                    newMessage: data.newMessage,
+                });
             })
+                
+            socket.on('joinRoom', (room) => {
+                socket.join(room)
+                console.log(`User ${socket.id} joined room: ${room}`);
+            });
+
+            socket.on('disconnect', () => {
+                console.log('User disconnected:', socket.id);
+            });
         })
     }
 }

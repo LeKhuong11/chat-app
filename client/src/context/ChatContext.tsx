@@ -4,6 +4,7 @@ import ChatApi from "../apis/Chat";
 import { User } from "../types/user";
 import MessageApi from "../apis/Message";
 import { MessageRequest, MessageType } from "../types/message";
+import { io, Socket } from "socket.io-client";
 
 const chatApi = new ChatApi();
 const messageApi = new MessageApi();
@@ -22,6 +23,8 @@ export function ChatContextProvider({ children, user }: Props) {
     const [ currentChat, setCurrentChat ] = useState<ChatType>();
     const [ messages, setMessages ] = useState<MessageType[]>([]);
     const [ isMessageLoading, setIsMessageLoading ] = useState<Boolean>(false);
+    const [ newMessage, setNewMessage ] = useState();
+    const [ socket, setSocket ] = useState<Socket | null>(null);
                                                     
     useEffect(() => {
         if(user?._id) {
@@ -46,6 +49,44 @@ export function ChatContextProvider({ children, user }: Props) {
         }
         
     }, [currentChat])
+
+    useEffect(() => {
+        const newSocket = io("ws://localhost:3002");
+        setSocket(newSocket);
+        console.log(newSocket);
+        
+        return () => {
+            newSocket.disconnect();
+        }
+    }, [user])
+
+    useEffect(() => {
+        console.log(1233);
+        
+        socket?.on('message', (res) => {
+            console.log('this line is running');
+            
+            if(currentChat?._id !== res.newMessage.chatId) return;
+            console.log(res.newMessage.content);
+            
+            setMessages((prev) => [...prev, res.newMessage])
+            
+        });
+
+        return () => {
+            socket?.off('message')
+        }
+    }, [])
+
+    useEffect(() => {
+        const recipientId = currentChat?.members.find(id => id !== user?._id);
+
+        socket?.emit('message', {
+            room: currentChat?._id,
+            newMessage,
+            recipientId
+        });        
+    }, [newMessage])
     
     const sendMessage = useCallback(async ({message, userId, chatId}: MessageRequest) => {
         const messageRequest: MessageRequest = {
@@ -56,13 +97,29 @@ export function ChatContextProvider({ children, user }: Props) {
 
         messageApi.sendMessage(messageRequest)
             .then(res => {
-                setMessages((prev) => [...prev, res])
+                setMessages((prev) => [...prev, res]);
+                setNewMessage(res);
             })
     }, [])
+
+    const handleSetCurrentChat = useCallback(async (chat: ChatType) => {
+        setCurrentChat(chat);
+        socket?.emit('joinRoom', chat?._id);
+    }, [currentChat])
     
 
     return (
-        <ChatContext.Provider value={{chats, isChatLoading, currentChat, setCurrentChat, messages, isMessageLoading, sendMessage}}>
+        <ChatContext.Provider 
+        value={{
+            chats, 
+            isChatLoading, 
+            currentChat, 
+            setCurrentChat, 
+            messages, 
+            isMessageLoading, 
+            sendMessage,
+            handleSetCurrentChat
+        }}>
             {children}
         </ChatContext.Provider>
     )

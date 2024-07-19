@@ -13,16 +13,21 @@ type useFetchPartnerType = {
 export function useFetchPartner({ chat, user }: useFetchPartnerType) {
     const [partner, setPartner] = useState<User | undefined>(undefined);
     
-  const userId = chat.members.find(member => member !== user._id) || '';
-  
+    const recipientId = chat?.members.find(member => member !== user._id) || '';
+    
     useEffect(() => {
         const getUser = async () => {
-            const response = await userApi.getUserById(userId);
-            setPartner(response.user);
+            if(!recipientId) return null;
+            
+            await userApi.getUserById(recipientId)
+                .then(res => {
+                    setPartner(res.user)
+                });
+            
         }
         
         getUser();
-    }, [])
+    }, [chat])
 
     
     return { partner };
