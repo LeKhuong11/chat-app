@@ -15,25 +15,26 @@ function Login() {
     
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
+        
         e.preventDefault();
         const userCredentials: UserLogin = {
             email: userLogin.email || '',
             password: userLogin.password || ''
-          };
-
-          userApi.login(userCredentials)
+        };
+        
+        userApi.login(userCredentials)
             .then(res => {
-                setUserToLocalStorage({_id: res.user._id, name: res.user.name, email: res.user.email}, res.user.token);
-                updateUserLogin({_id: res.user._id, name: res.user.name, email: res.user.email})
-                notification.success({
-                    message: 'Login successfully!', 
-                    description: 'Welcome to Chat App!'
+                    setUserToLocalStorage({_id: res.user._id, name: res.user.name, email: res.user.email}, res.user.token);
+                    updateUserLogin({_id: res.user._id, name: res.user.name, email: res.user.email})
+                    notification.success({
+                        message: 'Login successfully!', 
+                        description: 'Welcome to Chat App!'
+                    });
+                    navigate('/');
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
                 });
-                navigate('/');
-            })
-            .catch(error => {
-                console.error('Login error:', error);
-            });
     }
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {

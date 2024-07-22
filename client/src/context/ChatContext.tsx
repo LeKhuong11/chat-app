@@ -25,6 +25,7 @@ export function ChatContextProvider({ children, user }: Props) {
     const [ isMessageLoading, setIsMessageLoading ] = useState<Boolean>(false);
     const [ newMessage, setNewMessage ] = useState();
     const [ socket, setSocket ] = useState<Socket | null>(null);
+    const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
                                                     
     useEffect(() => {
         if(user?._id) {
@@ -51,9 +52,11 @@ export function ChatContextProvider({ children, user }: Props) {
     }, [currentChat])
 
     useEffect(() => {
-        const newSocket = io("ws://localhost:3002");
-        setSocket(newSocket);
-        console.log(newSocket);
+        const newSocket = io("http://localhost:3002");
+        newSocket.on('connect', () => {
+            setSocket(newSocket);
+            setIsSocketConnected(true);
+        })
         
         return () => {
             newSocket.disconnect();
@@ -61,13 +64,10 @@ export function ChatContextProvider({ children, user }: Props) {
     }, [user])
 
     useEffect(() => {
-        console.log(1233);
-        
         socket?.on('message', (res) => {
-            console.log('this line is running');
+            // console.log('this line is running');
             
             if(currentChat?._id !== res.newMessage.chatId) return;
-            console.log(res.newMessage.content);
             
             setMessages((prev) => [...prev, res.newMessage])
             
@@ -76,15 +76,14 @@ export function ChatContextProvider({ children, user }: Props) {
         return () => {
             socket?.off('message')
         }
-    }, [])
+    }, [currentChat])
 
     useEffect(() => {
-        const recipientId = currentChat?.members.find(id => id !== user?._id);
+        // const recipientId = currentChat?.members.find(id => id !== user?._id);
 
         socket?.emit('message', {
             room: currentChat?._id,
-            newMessage,
-            recipientId
+            newMessage
         });        
     }, [newMessage])
     
@@ -104,8 +103,8 @@ export function ChatContextProvider({ children, user }: Props) {
 
     const handleSetCurrentChat = useCallback(async (chat: ChatType) => {
         setCurrentChat(chat);
-        socket?.emit('joinRoom', chat?._id);
-    }, [currentChat])
+            socket?.emit('joinRoom', chat._id);
+    }, [currentChat, isSocketConnected])
     
 
     return (

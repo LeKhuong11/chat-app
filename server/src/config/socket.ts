@@ -20,17 +20,15 @@ class Socket {
             
         io.on('connection', (socket) => {
 
-            socket.on('message', (data) => {
-                console.log(data);
-                io.to(data.room).emit('message', {
-                    room: data.room,
-                    newMessage: data.newMessage,
+            socket.on('message', ({room, newMessage}) => {
+                socket.to(room).emit('message', {
+                    room: room,
+                    newMessage: newMessage,
                 });
             })
-                
+
             socket.on('joinRoom', (room) => {
-                socket.join(room)
-                console.log(`User ${socket.id} joined room: ${room}`);
+                socket.join(room);
             });
 
             socket.on('disconnect', () => {

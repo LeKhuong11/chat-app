@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useRef, useState } from 'react'
 import { IoMdCall } from 'react-icons/io';
 import { PiVideoCameraFill } from 'react-icons/pi';
 import { IoSend } from "react-icons/io5";
@@ -31,8 +31,8 @@ function ContentChat() {
         setMessage(event.target.value);
     };
 
-    const handleClickSendMessage = () => {
-        
+    const handleSubmitSendMessage = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         sendMessage({ message, userId: user._id, chatId: currentChat._id });
         setMessage('');
     };
@@ -77,11 +77,13 @@ function ContentChat() {
                             <div ref={messagesEndRef} />
                         </div>
 
-                        <div className='sendMessage flex py-3 justify-center border-t border-gray-600'>
-                            <input onChange={handleChangeMessage} type="text" value={message} placeholder='Type something ...' className='border-none w-10/12 h bg-custom-bg outline-none text-white px-5 py-2 rounded-md' />
-                            <div className=' bg-teal-500 flex items-center px-4 ml-3 cursor-pointer rounded-md '>
-                                <button onClick={handleClickSendMessage} type="button"><IoSend fontSize={22} fontWeight={700} className='text-white' /></button>
-                            </div>
+                        <div className='sendMessage'>
+                            <form className='flex py-3 justify-center  border-t border-gray-600' action="#" onSubmit={handleSubmitSendMessage}>
+                                <input onChange={handleChangeMessage} type="text" value={message} placeholder='Type something ...' className='border-none w-10/12 h bg-custom-bg outline-none text-white px-5 py-2 rounded-md' />
+                                <div className=' bg-teal-500 flex items-center px-4 ml-3 cursor-pointer rounded-md '>
+                                    <button type="submit"><IoSend fontSize={22} fontWeight={700} className='text-white' /></button>
+                                </div>
+                            </form>
                         </div>
                     </> : 
                     <div className='flex justify-center items-center h-full'>
