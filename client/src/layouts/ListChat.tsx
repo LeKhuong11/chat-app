@@ -5,20 +5,24 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import UserChat from '../components/UserChat';
 import { UserContext } from '../context/AuthContext';
-import { AutoComplete, Modal } from 'antd';
+import { AutoComplete, Modal, Spin } from 'antd';
 import { CloseSquareFilled } from '@ant-design/icons';
 import UserApi from '../apis/User';
 import useDebounce from '../hooks/useDebounce';
+import { ChatContext } from '../context/ChatContext';
+import { ChatType } from '../types/chat';
+
+const userApi = new UserApi();
 
 function ListChat() {
   const { user } = useContext(UserContext);
+  const { chats, isChatLoading, handleSetCurrentChat } = useContext(ChatContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState<{ value: string }>({value: ''});
   const [usersFinded, setUserFinded] = useState<{label: String, value: string}[]>([]);
   const debouncedValue = useDebounce(searchText, 500);
 
   const avatar = require('../assets/avatar.jpg');
-  const userApi = new UserApi();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -38,10 +42,9 @@ function ListChat() {
 
   const handleSelectedUser = (value: string) => {
     setIsModalOpen(false);
-};
+  };
 
   useEffect(() => {
-
     if(searchText.value) {
       userApi.findUser(searchText.value)
         .then( res => {
@@ -50,11 +53,11 @@ function ListChat() {
           }))
           setUserFinded(transformedUsers)
         }).catch(error => {
-          console.error('Login error:', error);
+          console.error('Error:', error);
         });
     }
     
-  }, [debouncedValue])
+  }, [debouncedValue]);
 
 
   return (
@@ -93,10 +96,18 @@ function ListChat() {
         </Modal>
       </div>
 
-      <div className='px-3'>
-        <UserChat withUser='Joinny Deep' message='you: Hellow world' />
-        <UserChat withUser='Kelvin' message='How are you today!' />
-        <UserChat withUser='Robin Hood' message='Thanks!' />
+      <div>
+        {
+          isChatLoading ? 
+            <div className='flex justify-center items-center h-40'>
+              <Spin></Spin>
+            </div> : 
+            chats?.map((item: ChatType) => (
+              <div key={item._id} onClick={() => handleSetCurrentChat(item)}>
+                <UserChat chat={item} user={user} />
+              </div>
+            ))
+        }
       </div>
     </div>
   )

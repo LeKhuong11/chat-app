@@ -23,6 +23,10 @@ class UserService {
         return newUser.toObject();
     }
 
+    public async getUserById(userId: string) {
+        return await userModel.findById(userId);
+    }
+
     public async findUsers(keyword: string) {
         
         return userModel.find({ 

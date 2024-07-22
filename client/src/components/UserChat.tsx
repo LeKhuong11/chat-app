@@ -1,22 +1,30 @@
 import React from 'react'
+import { ChatType } from '../types/chat';
+import { User } from '../types/user';
+import { useFetchPartner } from '../hooks/useFetchPartner';
+import { Avatar } from 'antd';
 
-interface userChat {
-  withUser: string,
-  message: string,
-  avatar?: string
+type userChat = {
+  chat: ChatType,
+  user: User
 }
 
-function UserChat(chat: userChat) {
-    const avatar = require('../assets/avatar.jpg');
+function UserChat({ chat, user }: userChat) {
+  const { partner } = useFetchPartner({chat, user});
+  
   return (
-    <div className="flex items-center py-3 bottom-2 border-b">
-      <img className='rounded-full w-10' src={avatar} alt="Avatar" />
-      <div>
-        <p className='font-bold px-2 text-white'>{chat.withUser}</p>
-        <p className='text-white text-xs px-2'>{chat.message}</p>
+    <div className=" cursor-pointer hover:bg-blue-900 rounded transition duration-300 ease-in-out">
+      <div className="border-b flex items-center p-3  bottom-2">
+        <Avatar size={40} style={{ backgroundColor: '#FF9900' }}>
+          {partner?.name.charAt(0).toUpperCase()}
+        </Avatar>
+        <div>
+          <p className='font-bold px-2 text-white'>{partner?.name}</p>
+          <p className='text-white text-xs px-2'></p>
+        </div>
       </div>
     </div>
-  )
+  ) 
 }
 
 export default UserChat;

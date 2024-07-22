@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import userModel from '../Models/UserModel';
 import JWT from "../Utils/jwtHelper";
 import UserService from '../Services/UserService';
 import { User, UserLogin } from '../Types/User';
@@ -17,7 +16,7 @@ class UserController {
     }
 
     
-    public async login (req: Request, res: Response) {
+    public async login(req: Request, res: Response) {
         try {
             const { email, password } = req.query as UserLogin;
             
@@ -90,6 +89,16 @@ class UserController {
 
             res.status(200).json({users});
         } catch (error) {
+            return res.status(500).json({ message: 'Server errors' });
+        }
+    }
+
+    public async getUserById(req: Request, res: Response) {
+        try {
+            const { userId } = req.params;
+            const user = await this.userService.getUserById(userId);
+            res.status(200).json({ user });
+        } catch(error) {
             return res.status(500).json({ message: 'Server errors' });
         }
     }

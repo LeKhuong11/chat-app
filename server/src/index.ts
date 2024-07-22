@@ -4,11 +4,15 @@ import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoute from './Routes/userRoute';
+import chatRoute from './Routes/chatRoute';
+import messageRoute from './Routes/messageRoute';
 import connectToDatabase from './config/database';
+import Socket from './config/socket';
 
 
 const app: Express = express();
 const server = http.createServer(app);
+const socket = new Socket(server);
 const PORT = process.env.PORT || 3002;
 dotenv.config();
 
@@ -27,10 +31,13 @@ const io = new SocketIOServer(server, {
 
 server.listen(PORT, () => {
   connectToDatabase();
+  socket.connect();
   console.log(`Server listening on port ${PORT}`);
 });
 
 app.use("/api/user", userRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/message", messageRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to chat app API');

@@ -9,7 +9,11 @@ type Props = {
 export const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export function UserContextProvider({ children }: Props) {
-    const [user, setUser] = useState<UserContextType['user']>(null);
+    const [user, setUser] = useState<UserContextType['user']>({
+        _id: '',
+        name: '',
+        email: ''
+    });
     const [token, setToken] = useState<string>('');
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const navigate = useNavigate();

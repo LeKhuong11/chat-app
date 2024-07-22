@@ -1,0 +1,36 @@
+import axios from "axios";
+import { MessageRequest } from "../types/message";
+
+class MessageApi {
+    private apiUrl;
+
+    constructor() {
+        this.apiUrl = 'http://localhost:3002/api';
+    }
+
+    public async sendMessage({message, userId, chatId}: MessageRequest) {
+        try {
+            const response = await axios.post(`${this.apiUrl}/message/create`, {
+                content: message,
+                senderId: userId,
+                chatId
+            })
+            return response.data;
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    public async getMessage(id: string) {
+        try {
+            const response = await axios.get(`${this.apiUrl}/message/get-message/${id}`);
+            return response.data;
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
+    }
+}
+
+export default MessageApi;

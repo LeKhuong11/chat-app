@@ -1,39 +1,40 @@
 import { Link } from "react-router-dom";
-import { UserLogin, UserProfile } from "../types/user";
+import { User, UserLogin } from "../types/user";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import UserApi from "../apis/User";
 import { UserContext } from "../context/AuthContext";
 
+const userApi = new UserApi();
 
 function Login() {
     const [ userLogin, setUserLogin ] = useState<UserLogin>({ email: '', password: '' });
     const navigate = useNavigate();
     const { updateUserLogin } = useContext(UserContext);
-    const userApi = new UserApi();
     
 
     function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
+        
         e.preventDefault();
         const userCredentials: UserLogin = {
             email: userLogin.email || '',
             password: userLogin.password || ''
-          };
-
-          userApi.login(userCredentials)
+        };
+        
+        userApi.login(userCredentials)
             .then(res => {
-                setUserToLocalStorage({name: res.user.name, email: res.user.email}, res.user.token);
-                updateUserLogin({name: res.user.name, email: res.user.email})
-                notification.success({
-                    message: 'Login successfully!', 
-                    description: 'Welcome to Chat App!'
+                    setUserToLocalStorage({_id: res.user._id, name: res.user.name, email: res.user.email}, res.user.token);
+                    updateUserLogin({_id: res.user._id, name: res.user.name, email: res.user.email})
+                    notification.success({
+                        message: 'Login successfully!', 
+                        description: 'Welcome to Chat App!'
+                    });
+                    navigate('/');
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
                 });
-                navigate('/');
-            })
-            .catch(error => {
-                console.error('Login error:', error);
-            });
     }
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +106,7 @@ function Login() {
     );
 };
 
-function setUserToLocalStorage(user: UserProfile, token: string) {
+function setUserToLocalStorage(user: User, token: string) {
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", JSON.stringify(token));
 }
