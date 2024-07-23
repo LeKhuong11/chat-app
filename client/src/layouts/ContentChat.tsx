@@ -7,6 +7,9 @@ import { ChatContext } from '../context/ChatContext';
 import { UserContext } from '../context/AuthContext';
 import { Spin } from 'antd';
 import { useFetchPartner } from '../hooks/useFetchPartner';
+import InputEmoji from "react-input-emoji";
+
+
 
 function ContentChat() {
     const avatar = require('../assets/avatar.jpg');
@@ -15,8 +18,11 @@ function ContentChat() {
     const [message, setMessage] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const { partner } = useFetchPartner({chat: currentChat, user});
-    
-    
+    const [text, setText] = useState('');
+
+    const handleEmojiChange = (value: string) => {
+      setText(value);
+    };
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
@@ -39,7 +45,7 @@ function ContentChat() {
 
     return (
         <div className="w-3/5 h-5/6 bg-gray-900 bg-opacity-50 backdrop-blur-strong rounded-lg mr-1 p-3">
-            {messages.length !== 0 ? 
+            {currentChat ? 
                 isMessageLoading ? 
                     <div className='mt-5 flex justify-center'>
                         <Spin size='large'></Spin>
@@ -80,6 +86,7 @@ function ContentChat() {
                         <div className='sendMessage'>
                             <form className='flex py-3 justify-center  border-t border-gray-600' action="#" onSubmit={handleSubmitSendMessage}>
                                 <input onChange={handleChangeMessage} type="text" value={message} placeholder='Type something ...' className='border-none w-10/12 h bg-custom-bg outline-none text-white px-5 py-2 rounded-md' />
+                                {/* <InputEmoji value={text} onChange={handleEmojiChange} /> */}
                                 <div className=' bg-teal-500 flex items-center px-4 ml-3 cursor-pointer rounded-md '>
                                     <button type="submit"><IoSend fontSize={22} fontWeight={700} className='text-white' /></button>
                                 </div>
