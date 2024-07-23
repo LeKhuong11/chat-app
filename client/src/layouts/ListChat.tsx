@@ -11,15 +11,18 @@ import UserApi from '../apis/User';
 import useDebounce from '../hooks/useDebounce';
 import { ChatContext } from '../context/ChatContext';
 import { ChatType } from '../types/chat';
+import { User } from '../types/user';
+import ChatApi from '../apis/Chat';
 
 const userApi = new UserApi();
+const chatApi = new ChatApi();
 
 function ListChat() {
   const { user } = useContext(UserContext);
-  const { chats, isChatLoading, handleSetCurrentChat } = useContext(ChatContext);
+  const { chats, setChats, isChatLoading, handleSetCurrentChat } = useContext(ChatContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState<{ value: string }>({value: ''});
-  const [usersFinded, setUserFinded] = useState<{label: String, value: string}[]>([]);
+  const [usersFinded, setUserFinded] = useState<User[]>([]);
   const debouncedValue = useDebounce(searchText, 500);
 
   const avatar = require('../assets/avatar.jpg');
@@ -37,10 +40,19 @@ function ListChat() {
   };
 
   const handleFindUser = (value: string) => {
+    
     setSearchText({value});
   }
 
-  const handleSelectedUser = (value: string) => {
+  const handleSelectedUser = async (value: string, option: { value: string, key: string }) => {
+    chatApi.createChat({firstId: user._id, secondId: option.key})
+      .then(chat => {
+        console.log(chats);
+        
+        setChats((prev: ChatType[]) => [...prev, chat]);
+        handleSetCurrentChat(chat);
+      });
+    
     setIsModalOpen(false);
   };
 
@@ -48,10 +60,13 @@ function ListChat() {
     if(searchText.value) {
       userApi.findUser(searchText.value)
         .then( res => {
-          const transformedUsers = res.users.map((user: { name: string, _id: string, email: string }) => ({
-            value: `${user.name}(${user.email})`
+          const users = res.users.map((user: User) => ({
+            _id: user._id,
+            name: user.name,
+            email: user.email
           }))
-          setUserFinded(transformedUsers)
+          
+          setUserFinded(users)
         }).catch(error => {
           console.error('Error:', error);
         });
@@ -86,7 +101,10 @@ function ListChat() {
         </div>
         <Modal title="Tìm kiếm bạn bè" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
           <AutoComplete
-            options={usersFinded}
+            options={usersFinded.map(user => ({
+              value: user.name + `(${user.email})`,
+              key: user._id, 
+            }))}
             style={{ width: '100%'}}
             onSearch={(value) => handleFindUser(value)}
             onSelect={handleSelectedUser}

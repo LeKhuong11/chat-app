@@ -18,7 +18,7 @@ type Props = {
 export const ChatContext = createContext<ChatContextType>({} as ChatContextType);
 
 export function ChatContextProvider({ children, user }: Props) {
-    const [ chats, setChats ] = useState<ChatContextType>();
+    const [ chats, setChats ] = useState<ChatType>();
     const [ isChatLoading, setIsChatLoading ] = useState<Boolean>(false);
     const [ currentChat, setCurrentChat ] = useState<ChatType>();
     const [ messages, setMessages ] = useState<MessageType[]>([]);
@@ -100,10 +100,12 @@ export function ChatContextProvider({ children, user }: Props) {
                 setNewMessage(res);
             })
     }, [])
-
+    
     const handleSetCurrentChat = useCallback(async (chat: ChatType) => {
+        console.log(chat);
+        
         setCurrentChat(chat);
-            socket?.emit('joinRoom', chat._id);
+        socket?.emit('joinRoom', chat._id);
     }, [currentChat, isSocketConnected])
     
 
@@ -111,6 +113,7 @@ export function ChatContextProvider({ children, user }: Props) {
         <ChatContext.Provider 
         value={{
             chats, 
+            setChats,
             isChatLoading, 
             currentChat, 
             setCurrentChat, 
