@@ -21,9 +21,19 @@ class ChatApi {
         }
     }
 
-    public async getChats(userId: String) {
+    public async getChats(userId: string) {
         try {
             const response = await axios.get(`${this.apiUrl}/chat/get-chat/${userId}`);
+            return response.data;
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    public async deleteChat(chatId: string) {
+        try {
+            const response = await axios.delete(`${this.apiUrl}/chat/delete/${chatId}`);
             return response.data;
         } catch(error) {
             console.log(error);

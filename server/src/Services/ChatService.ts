@@ -1,4 +1,5 @@
 import chatModel from "../Models/ChatModel";
+import messageModel from "../Models/MessageModel";
 import { ChatParams } from "../Types/Chat";
 
 class ChatService {
@@ -31,6 +32,17 @@ class ChatService {
             return await chatModel.find({
                 members: {$in: [userId]}
             })
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    public async deleteChat(chatId: string) {
+        try {
+            await chatModel.deleteOne({_id: chatId});
+            await messageModel.deleteMany({chatId});
+            
+            return true;
         } catch(error) {
             throw error;
         }

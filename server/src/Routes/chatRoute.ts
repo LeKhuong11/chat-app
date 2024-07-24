@@ -9,5 +9,8 @@ router.post('/create', (req: Request, res: Response) => {
 router.get('/get-chat/:userId', (req: Request, res: Response) => {
     ChatController.getChatsByUserId(req, res);
 });
+router.delete('/delete/:chatId', (req: Request, res: Response) => {
+    ChatController.deleteChat(req, res);
+});
 
 export default router;
