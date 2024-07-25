@@ -10,10 +10,10 @@ class ChatController {
         const { firstId, secondId } = req.body as ChatParams;
 
         const chat = await this.chatService.getChat({firstId, secondId});
-        if(chat) return res.status(200).json(chat);
+        if(chat) res.status(200).json(chat);
 
         const newChat = await this.chatService.createChat({firstId, secondId});
-        return res.status(200).json(newChat);
+        res.status(200).json(newChat);
     }
 
     public async getChatsByUserId(req: Request, res: Response) {
@@ -24,6 +24,20 @@ class ChatController {
             return res.status(200).json(chats);
         } catch (error) {
             return res.status(500).json({ message: 'Server errors' });
+        }
+    }
+
+    public async deleteChat(req: Request, res: Response) {
+        const chatId = req.params.chatId as string;
+        try {
+            const isDeleteChat = await this.chatService.deleteChat(chatId);
+        
+            if(!isDeleteChat) {
+                res.status(500).json({status: false, message: 'Conversation deletion failed'});
+            }
+            res.status(200).json({status: true, message: 'Successfully deleted chat'});
+        } catch(error) {
+            res.status(500).json({ message: 'Server errors' });
         }
     }
 }

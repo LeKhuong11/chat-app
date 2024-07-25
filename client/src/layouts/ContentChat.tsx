@@ -5,7 +5,7 @@ import { IoSend } from "react-icons/io5";
 import Message from '../components/Message';
 import { ChatContext } from '../context/ChatContext';
 import { UserContext } from '../context/AuthContext';
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 import { useFetchPartner } from '../hooks/useFetchPartner';
 import InputEmoji from "react-input-emoji";
 
@@ -93,8 +93,9 @@ function ContentChat() {
                             </form>
                         </div>
                     </> : 
-                    <div className='flex justify-center items-center h-full'>
-                        <h2 className='text-white '>Hãy chọn cuộc trò chuyện để bắt đầu!</h2>
+                    <div className='flex flex-col justify-center items-center h-full'>
+                        <Empty description={false} />
+                        <h2 className='text-white'>Select a chat to get started!</h2>
                     </div>}
         </div>
     );

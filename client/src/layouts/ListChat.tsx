@@ -121,7 +121,7 @@ function ListChat() {
               <Spin></Spin>
             </div> : 
             chats?.map((item: ChatType) => (
-              <div key={item._id} onClick={() => handleSetCurrentChat(item)}>
+              <div key={item._id}>
                 <UserChat chat={item} user={user} />
               </div>
             ))

@@ -5,6 +5,7 @@ import { User } from "../types/user";
 import MessageApi from "../apis/Message";
 import { MessageRequest, MessageType } from "../types/message";
 import { io, Socket } from "socket.io-client";
+import { message } from 'antd';
 
 const chatApi = new ChatApi();
 const messageApi = new MessageApi();
@@ -26,7 +27,8 @@ export function ChatContextProvider({ children, user }: Props) {
     const [ newMessage, setNewMessage ] = useState();
     const [ socket, setSocket ] = useState<Socket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
-                                                    
+    
+                   
     useEffect(() => {
         if(user?._id) {
             setIsChatLoading(true);
@@ -102,27 +104,37 @@ export function ChatContextProvider({ children, user }: Props) {
     }, [])
     
     const handleSetCurrentChat = useCallback(async (chat: ChatType) => {
-        console.log(chat);
-        
         setCurrentChat(chat);
         socket?.emit('joinRoom', chat._id);
     }, [currentChat, isSocketConnected])
     
-
+    const handleClickDeleteChat = useCallback(async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, chatId: string) => {
+        event.stopPropagation();
+        
+        chatApi.deleteChat(chatId)
+            .then(res => {
+                message.success(res.message);
+                if(currentChat?._id === chatId) {
+                    setCurrentChat(undefined);
+                }
+            })
+    }, [])
+        
     return (
         <ChatContext.Provider 
-        value={{
-            chats, 
-            setChats,
-            isChatLoading, 
-            currentChat, 
-            setCurrentChat, 
-            messages, 
-            isMessageLoading, 
-            sendMessage,
-            handleSetCurrentChat
-        }}>
-            {children}
+            value={{
+                chats, 
+                setChats,
+                isChatLoading, 
+                currentChat, 
+                setCurrentChat, 
+                messages, 
+                isMessageLoading, 
+                sendMessage,
+                handleSetCurrentChat,
+                handleClickDeleteChat
+            }}>
+                {children}
         </ChatContext.Provider>
     )
 }

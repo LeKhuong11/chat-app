@@ -13,6 +13,11 @@ export type ChatRequest = {
     secondId: string
 }
 
+type userChat = {
+    chat: ChatType,
+    user: User
+  }
+
 export type ChatContextType = {
     chats: Array,
     setChats: Dispatch<SetStateAction<ChatType[] | undefined[]>>,
@@ -22,5 +27,6 @@ export type ChatContextType = {
     isMessageLoading: Boolean,
     messages: MessageType[],
     sendMessage: ({ message, userId, chatId }: MessageRequest)  => Promise<void>,
-    handleSetCurrentChat: (item: ChatType) => Promise<void>
+    handleSetCurrentChat: (item: ChatType) => Promise<void>,
+    handleClickDeleteChat: (evnet: React.MouseEvent<HTMLDivElement, MouseEvent>, chatId: string) => Promise<void>
 }
