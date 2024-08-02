@@ -1,5 +1,6 @@
 import { Server as SocketIOServer } from 'socket.io';
 import http from 'http';
+import { OnlineUsers } from '../Types/User';
 
 class Socket {
     private server: http.Server;
@@ -17,22 +18,39 @@ class Socket {
                 origin: "*",
             }
         });
+
+        let onlineUsers: OnlineUsers[] = [];
             
         io.on('connection', (socket) => {
 
-            socket.on('message', ({room, newMessage}) => {
-                socket.to(room).emit('message', {
-                    room: room,
-                    newMessage: newMessage,
-                });
-            })
+            socket.on('message', ({newMessage, recipientId}) => {
+                const user = onlineUsers.find((user) => user.userId === recipientId);
 
-            socket.on('joinRoom', (room) => {
-                socket.join(room);
+                if(user) {
+                    io.to(user.socketId).emit('message', newMessage)
+
+                    io.to(user.socketId).emit('notification', {
+                        isReadMessage: false,
+                        senderId: newMessage.senderId,
+                        date: new Date()
+                    });
+                }
+            })  
+
+            socket.on('addUserOnline', (userId) => {
+                !onlineUsers.some((user) => user.userId === userId) && 
+                    onlineUsers.push({
+                        userId,
+                        socketId: socket.id
+                    });
+
+                io.emit('getUserOnlines', onlineUsers);
             });
 
             socket.on('disconnect', () => {
-                console.log('User disconnected:', socket.id);
+                onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+
+                io.emit('getUserOnlines', onlineUsers);
             });
         })
     }

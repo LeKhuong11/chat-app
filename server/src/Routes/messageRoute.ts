@@ -10,4 +10,8 @@ router.get('/get-message/:chatId', (req: Request, res: Response) => {
     MessageController.getMessages(req, res);
 })
 
+router.get('/get-latest-message/:chatId', (req: Request, res: Response) => {
+    MessageController.getLatesMessage(req, res);
+})
+
 export default router;

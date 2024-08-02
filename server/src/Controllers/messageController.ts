@@ -29,6 +29,16 @@ class MessageController {
             return res.status(500).json({ message: `Server errors: ${error}` });
         }
     }
+
+    public async getLatesMessage(req: Request, res: Response) {
+        const { chatId } = req.params;
+        try {
+            const message = await this.messageService.getLatestMessage(chatId);
+            return res.status(200).json(message);
+        } catch(error) {
+            return res.status(500).json({ message: `Server errors: ${error}` });
+        }
+    }
 }
 
 const messageController = new MessageController();

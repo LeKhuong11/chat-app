@@ -28,7 +28,7 @@ function Login() {
                     updateUserLogin({_id: res.user._id, name: res.user.name, email: res.user.email})
                     notification.success({
                         message: 'Login successfully!', 
-                        description: 'Welcome to Chat App!'
+                        description: `Welcome ${res.user.name} to Chat App!`
                     });
                     navigate('/');
                 })

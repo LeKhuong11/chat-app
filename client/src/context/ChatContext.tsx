@@ -1,11 +1,12 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { ChatContextType, ChatType } from "../types/chat";
 import ChatApi from "../apis/Chat";
-import { User } from "../types/user";
+import { OnlineUsers, User } from "../types/user";
 import MessageApi from "../apis/Message";
 import { MessageRequest, MessageType } from "../types/message";
 import { io, Socket } from "socket.io-client";
 import { message } from 'antd';
+import { NotificationType } from "../types/notification";
 
 const chatApi = new ChatApi();
 const messageApi = new MessageApi();
@@ -26,9 +27,11 @@ export function ChatContextProvider({ children, user }: Props) {
     const [ isMessageLoading, setIsMessageLoading ] = useState<Boolean>(false);
     const [ newMessage, setNewMessage ] = useState();
     const [ socket, setSocket ] = useState<Socket | null>(null);
-    const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+    const [ isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+    const [ notifications, setNotifications ] = useState<NotificationType[]>([]);
+    const [ onlineUsers, setOnlineUsers ] = useState<OnlineUsers[]>([]);
     
-                   
+    console.log(notifications);
     useEffect(() => {
         if(user?._id) {
             setIsChatLoading(true);
@@ -65,27 +68,46 @@ export function ChatContextProvider({ children, user }: Props) {
         }
     }, [user])
 
+
+    useEffect(() => {
+        if(socket === null) return;
+        socket.emit('addUserOnline', user?._id);
+        socket.on('getUserOnlines', (res) => {
+            setOnlineUsers(res);
+        })
+    }, [socket])
+    
     useEffect(() => {
         socket?.on('message', (res) => {
-            // console.log('this line is running');
+            if(currentChat?._id !== res.chatId) return;
             
-            if(currentChat?._id !== res.newMessage.chatId) return;
-            
-            setMessages((prev) => [...prev, res.newMessage])
-            
+            setMessages((prev) => [...prev, res]);
+            // setNewMessage(res);
         });
 
+        socket?.on('notification', (res) => {
+            const isChatOpen = currentChat?.members.some(id => id === res.senderId);
+
+            if(isChatOpen) {
+                setNotifications((prev) => [{ ...res, isReadMessage: true }, ...prev])
+            } else {
+                setNotifications((prev) => [res, ...prev])
+            }
+            
+        })
+
         return () => {
-            socket?.off('message')
+            socket?.off('message');
+            socket?.off('notification');
         }
-    }, [currentChat])
+    }, [socket, currentChat])
 
     useEffect(() => {
-        // const recipientId = currentChat?.members.find(id => id !== user?._id);
-
+        const recipientId = currentChat?.members.find(member => member !== user?._id);
+        
         socket?.emit('message', {
-            room: currentChat?._id,
-            newMessage
+            newMessage,
+            recipientId
         });        
     }, [newMessage])
     
@@ -105,7 +127,6 @@ export function ChatContextProvider({ children, user }: Props) {
     
     const handleSetCurrentChat = useCallback(async (chat: ChatType) => {
         setCurrentChat(chat);
-        socket?.emit('joinRoom', chat._id);
     }, [currentChat, isSocketConnected])
     
     const handleClickDeleteChat = useCallback(async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, chatId: string) => {
@@ -114,6 +135,7 @@ export function ChatContextProvider({ children, user }: Props) {
         chatApi.deleteChat(chatId)
             .then(res => {
                 message.success(res.message);
+                
                 if(currentChat?._id === chatId) {
                     setCurrentChat(undefined);
                 }
@@ -124,13 +146,16 @@ export function ChatContextProvider({ children, user }: Props) {
         <ChatContext.Provider 
             value={{
                 chats, 
-                setChats,
-                isChatLoading, 
-                currentChat, 
-                setCurrentChat, 
                 messages, 
+                onlineUsers,
+                newMessage,
+                currentChat, 
+                notifications,
+                isChatLoading, 
                 isMessageLoading, 
+                setChats,
                 sendMessage,
+                setCurrentChat, 
                 handleSetCurrentChat,
                 handleClickDeleteChat
             }}>

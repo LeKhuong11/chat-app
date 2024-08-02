@@ -23,6 +23,11 @@ export type UserContextType = {
     updateUserLogin: any
 }
 
+export type OnlineUsers = {
+    userId: string,
+    socketId: string
+}
+
 export type User = {
     _id: string,
     name: string,

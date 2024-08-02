@@ -16,6 +16,17 @@ class ChatController {
         res.status(200).json(newChat);
     }
 
+
+    public async findChat(req: Request, res: Response) {
+        const { firstId, secondId } = req.body as ChatParams;
+
+        const chat = await this.chatService.getChat({firstId, secondId});
+        if(chat) res.status(200).json(chat);
+
+        res.status(200).json({ message: 'Not found chat!'});
+    }
+
+
     public async getChatsByUserId(req: Request, res: Response) {
         const { userId } = req.params;
         try {
@@ -26,6 +37,7 @@ class ChatController {
             return res.status(500).json({ message: 'Server errors' });
         }
     }
+    
 
     public async deleteChat(req: Request, res: Response) {
         const chatId = req.params.chatId as string;

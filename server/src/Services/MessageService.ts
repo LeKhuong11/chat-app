@@ -25,6 +25,16 @@ class MessageService {
             throw error;
         }
     }
+
+    public async getLatestMessage(chatId: string) {
+        try {
+            return await messageModel.findOne({ chatId })
+            .sort({ createdAt: -1 })
+            .exec();
+        } catch(error) {
+            throw error;
+        }
+    }
 }
 
 export default MessageService;

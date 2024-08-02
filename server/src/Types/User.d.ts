@@ -9,3 +9,8 @@ export type UserLogin = {
     email: string, 
     password: string
 }
+
+export type OnlineUsers = {
+    userId: string,
+    socketId: string
+}

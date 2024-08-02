@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { IoIosMore } from "react-icons/io";
-import { PiVideoCameraFill } from "react-icons/pi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import UserChat from '../components/UserChat';
 import { UserContext } from '../context/AuthContext';
-import { AutoComplete, Modal, Spin } from 'antd';
+import { AutoComplete, Badge, Modal, Spin } from 'antd';
 import { CloseSquareFilled } from '@ant-design/icons';
 import UserApi from '../apis/User';
 import useDebounce from '../hooks/useDebounce';
@@ -13,6 +11,7 @@ import { ChatContext } from '../context/ChatContext';
 import { ChatType } from '../types/chat';
 import { User } from '../types/user';
 import ChatApi from '../apis/Chat';
+import { GoBellFill } from "react-icons/go";
 
 const userApi = new UserApi();
 const chatApi = new ChatApi();
@@ -47,8 +46,6 @@ function ListChat() {
   const handleSelectedUser = async (value: string, option: { value: string, key: string }) => {
     chatApi.createChat({firstId: user._id, secondId: option.key})
       .then(chat => {
-        console.log(chats);
-        
         setChats((prev: ChatType[]) => [...prev, chat]);
         handleSetCurrentChat(chat);
       });
@@ -83,10 +80,9 @@ function ListChat() {
           <h3 className='font-bold px-2 font-mono text-white'>{user?.name}</h3>
         </div>
         <div className="flex">
-          <div className="px-3 cursor-pointer">
-            <PiVideoCameraFill fontSize={22} fontWeight={700} className='text-white' />
-          </div>
-            <IoIosMore fontSize={22} fontWeight={700} className='text-white' />
+          <Badge count={5}>
+            <GoBellFill fontSize={30} />
+          </Badge>
         </div>
       </div>
 

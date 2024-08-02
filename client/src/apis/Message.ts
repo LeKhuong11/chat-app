@@ -31,6 +31,15 @@ class MessageApi {
             throw error;
         }
     }
+
+    public async getLatestMessage(chatId: string) {
+        try {
+            const response = await axios.get(`${this.apiUrl}/message/get-latest-message/${chatId}`);
+            return response.data;
+        } catch(error) {
+            throw error;
+        }
+    }
 }
 
 export default MessageApi;

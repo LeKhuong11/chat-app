@@ -31,6 +31,19 @@ class ChatApi {
         }
     }
 
+    public async findChat({ firstId, secondId }: ChatRequest) {
+        try {
+            const response = await axios.post(`${this.apiUrl}/chat/find`, {
+                firstId,
+                secondId
+            });
+            return response.data;
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     public async deleteChat(chatId: string) {
         try {
             const response = await axios.delete(`${this.apiUrl}/chat/delete/${chatId}`);
