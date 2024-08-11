@@ -33,5 +33,6 @@ export type ChatContextType = {
     onlineUsers: OnlineUsers[],
     sendMessage: ({ message, userId, chatId }: MessageRequest)  => Promise<void>,
     handleSetCurrentChat: (item: ChatType) => Promise<void>,
-    handleClickDeleteChat: (evnet: React.MouseEvent<HTMLDivElement, MouseEvent>, chatId: string) => Promise<void>
+    handleClickDeleteChat: (evnet: React.MouseEvent<HTMLDivElement, MouseEvent>, chatId: string) => Promise<void>,
+    markThisUserAsReadMessage: ({ thisUserNotification, notification }: any)  => void,
 }

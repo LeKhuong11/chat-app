@@ -30,16 +30,15 @@ export function ChatContextProvider({ children, user }: Props) {
     const [ isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
     const [ notifications, setNotifications ] = useState<NotificationType[]>([]);
     const [ onlineUsers, setOnlineUsers ] = useState<OnlineUsers[]>([]);
-    
-    console.log(notifications);
+     
     useEffect(() => {
         if(user?._id) {
             setIsChatLoading(true);
             chatApi.getChats(user._id)
-            .then(res => {
-                setChats(res);
-                setIsChatLoading(false);
-            })
+                .then(res => {
+                    setChats(res);
+                    setIsChatLoading(false);
+                })
         }
         
     }, [user])
@@ -82,7 +81,6 @@ export function ChatContextProvider({ children, user }: Props) {
             if(currentChat?._id !== res.chatId) return;
             
             setMessages((prev) => [...prev, res]);
-            // setNewMessage(res);
         });
 
         socket?.on('notification', (res) => {
@@ -140,7 +138,29 @@ export function ChatContextProvider({ children, user }: Props) {
                     setCurrentChat(undefined);
                 }
             })
-    }, [])
+    }, []);
+
+
+    const markThisUserAsReadMessage = useCallback(({userUnread, notifications}: any) => {
+        const markNotifications = notifications.map((el: any) => {
+            let notification;   
+            
+            userUnread.forEach((n: any) => {
+                if(n.senderId === el.senderId) {
+                    notification = {...n, isReadMessage: true}
+                } else {
+                    notification = el;
+                }
+            });
+            
+            return notification;
+            
+        });
+
+        console.log(markNotifications);
+        
+        setNotifications(markNotifications);
+    }, []);
         
     return (
         <ChatContext.Provider 
@@ -157,7 +177,8 @@ export function ChatContextProvider({ children, user }: Props) {
                 sendMessage,
                 setCurrentChat, 
                 handleSetCurrentChat,
-                handleClickDeleteChat
+                handleClickDeleteChat,
+                markThisUserAsReadMessage
             }}>
                 {children}
         </ChatContext.Provider>

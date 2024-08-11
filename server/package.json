@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimaf ./build && tsc",
     "dev": "nodemon",
-    "start": "nodemon",
+    "start": "node index.j",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node": "^20.12.8",
-    "typescript": "^5.4.5"
+    "@types/node": "^20.14.15",
+    "typescript": "^5.5.4"
   }
 }

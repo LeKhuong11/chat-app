@@ -7,7 +7,7 @@ import userRoute from './Routes/userRoute';
 import chatRoute from './Routes/chatRoute';
 import messageRoute from './Routes/messageRoute';
 import connectToDatabase from './config/database';
-import Socket from './config/socket';
+import Socket from './Socket/socket';
 
 
 const app: Express = express();
