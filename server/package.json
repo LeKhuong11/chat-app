@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimaf ./build && tsc",
-    "dev": "nodemon",
-    "start": "node index.j",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev --poll ./src/index.ts",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +27,8 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.15",
+    "rimraf": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
   }
 }

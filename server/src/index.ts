@@ -13,7 +13,7 @@ import Socket from './Socket/socket';
 const app: Express = express();
 const server = http.createServer(app);
 const socket = new Socket(server);
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 4000;
 dotenv.config();
 
 

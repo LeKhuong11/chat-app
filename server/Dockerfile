@@ -1,22 +1,36 @@
-FROM node:20
+# Build stage
+FROM node:20 as build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
+# Sao chép package.json và package-lock.json vào container
 COPY package*.json ./
 
-# Install the dependencies
+# Cài đặt tất cả các phụ thuộc, bao gồm cả devDependencies
 RUN npm install
 
-# Copy the rest of the application code to the working directory
+# Sao chép toàn bộ mã nguồn vào thư mục làm việc trong container
 COPY . .
 
-# Set an environment variable 
-ENV PORT=3000
+# Biên dịch mã TypeScript
+RUN npm run build
 
-# Expose the port that the app will run on
-EXPOSE 3000
+# Production stage
+FROM node:20-alpine as production
 
-# Tell docker what command will start the application
-CMD [ "npm", "start" ]
+WORKDIR /app
+
+# Sao chép package.json và package-lock.json từ giai đoạn build
+COPY package*.json ./
+
+# Cài đặt các phụ thuộc sản phẩm
+RUN npm ci --only=production
+
+# Sao chép thư mục build từ giai đoạn build
+COPY --from=build /app/build ./build
+
+
+EXPOSE 3002
+
+# Chạy ứng dụng Node.js
+CMD ["node", "build/index.js"]
