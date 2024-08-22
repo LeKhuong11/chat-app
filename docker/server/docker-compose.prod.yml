@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  api:
+    build:
+      context: ../../server
+      target: production
+      dockerfile: Dockerfile
+    container_name: chat-app-api
+    ports:
+    - 4000:4000
+    environment:
+      PORT: "4000"
+      MONGOOSE_URI: "mongodb+srv://khuongdev11:khuongle1102@cluster0.ojyzo9r.mongodb.net/chat_app?retryWrites=true&w=majority&appName=Cluster0"
+      JWT_SECRET_KEY: "supersecretkey11022001"

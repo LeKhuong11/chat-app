@@ -29,8 +29,7 @@ RUN npm ci --only=production
 # Sao chép thư mục build từ giai đoạn build
 COPY --from=build /app/build ./build
 
-
-EXPOSE 3002
+EXPOSE 4000
 
 # Chạy ứng dụng Node.js
 CMD ["node", "build/index.js"]

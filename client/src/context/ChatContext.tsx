@@ -56,7 +56,7 @@ export function ChatContextProvider({ children, user }: Props) {
     }, [currentChat])
 
     useEffect(() => {
-        const newSocket = io("http://localhost:3002");
+        const newSocket = io("http://localhost:4000");
         newSocket.on('connect', () => {
             setSocket(newSocket);
             setIsSocketConnected(true);

@@ -6,7 +6,7 @@ class UserApi {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = process.env.API_URL || 'http://localhost:3002/api';
+    this.apiUrl = process.env.API_URL || 'http://localhost:4000/api';
     
   }
 

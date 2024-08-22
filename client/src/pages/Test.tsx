@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import './App.css';
 import io, { Socket, Manager }  from 'socket.io-client';
 
-const socket = io("http://localhost:3002");
+const socket = io("http://localhost:4000");
 
 function Text() {
   const [messages, setMessages] = useState<string[]>([]);

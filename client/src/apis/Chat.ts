@@ -5,7 +5,7 @@ class ChatApi {
     private apiUrl;
 
     constructor() {
-        this.apiUrl = 'http://localhost:3002/api';
+        this.apiUrl = 'http://localhost:4000/api';
     }
 
     public async createChat({ firstId, secondId }: ChatRequest ) {
