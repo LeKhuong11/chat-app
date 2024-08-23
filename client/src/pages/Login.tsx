@@ -3,7 +3,7 @@ import { User, UserLogin } from "../types/user";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
-import UserApi from "../apis/User";
+import UserApi from "../apis/user";
 import { UserContext } from "../context/AuthContext";
 
 const userApi = new UserApi();

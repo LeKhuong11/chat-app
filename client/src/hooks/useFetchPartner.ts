@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { ChatType } from "../types/chat"
 import { User } from "../types/user"
-import UserApi from "../apis/User"
+import UserApi from "../apis/user"
 
 const userApi = new UserApi();
 

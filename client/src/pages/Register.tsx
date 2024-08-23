@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserRegister } from "../types/user";
-import UserApi from "../apis/User";
+import UserApi from "../apis/user";
 import { notification } from "antd";
 
 const userApi = new UserApi();

@@ -5,7 +5,7 @@ import UserChat from '../components/UserChat';
 import { UserContext } from '../context/AuthContext';
 import { AutoComplete, Badge, Modal, Spin } from 'antd';
 import { CloseSquareFilled } from '@ant-design/icons';
-import UserApi from '../apis/User';
+import UserApi from '../apis/user';
 import useDebounce from '../hooks/useDebounce';
 import { ChatContext } from '../context/ChatContext';
 import { ChatType } from '../types/chat';
