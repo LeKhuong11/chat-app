@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import JWT from "../Utils/jwtHelper";
+import JWT from "../utils/jwtHelper";
 import UserService from '../Services/UserService';
 import { User, UserLogin } from '../Types/User';
 const validator = require('validator');
