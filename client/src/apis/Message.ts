@@ -5,7 +5,7 @@ class MessageApi {
     private apiUrl;
 
     constructor() {
-        this.apiUrl = 'http://localhost:4000/api';
+        this.apiUrl = 'http://222.255.238.163:4000/api';
     }
 
     public async sendMessage({message, userId, chatId}: MessageRequest) {
