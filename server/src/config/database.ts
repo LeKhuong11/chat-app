@@ -2,7 +2,7 @@ import mongoose, { ConnectOptions } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const mongooseUri: string = process.env.MONGOOSE_URI || '';
+const mongooseUri: string = 'mongodb+srv://khuongdev11:khuongle1102@cluster0.ojyzo9r.mongodb.net/chat_app?retryWrites=true&w=majority&appName=Cluster0';
 
 async function connectToDatabase() {
     try {
