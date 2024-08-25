@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 services:
   backend:
     build:
@@ -16,7 +16,7 @@ services:
       MONGOOSE_URI: "mongodb+srv://khuongdev11:khuongle1102@cluster0.ojyzo9r.mongodb.net/chat_app?retryWrites=true&w=majority&appName=Cluster0"
       JWT_SECRET_KEY: "supersecretkey11022001"
 
-  nginx: 
+  nginx:  
     image: nginx:1.27.0
     ports:
       - 80:80
