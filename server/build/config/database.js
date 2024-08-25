@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const mongooseUri = process.env.MONGOOSE_URI || '';
 function connectToDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const mongooseUri = 'mongodb+srv://khuongdev11:khuongle1102@cluster0.ojyzo9r.mongodb.net/chat_app?retryWrites=true&w=majority&appName=Cluster0';
             mongoose_1.default.connect(mongooseUri, { useNewUrlParser: true, useUnifiedTopology: true })
                 .then(() => {
                 console.log('Connected to MongoDB');

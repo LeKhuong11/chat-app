@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jwtHelper_1 = __importDefault(require("../Utils/jwtHelper"));
+const jwtHelper_1 = __importDefault(require("../utils/jwtHelper"));
 const UserService_1 = __importDefault(require("../Services/UserService"));
 const validator = require('validator');
 const bcrypt = require('bcrypt');
