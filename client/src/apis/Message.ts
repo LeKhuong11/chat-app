@@ -2,10 +2,10 @@ import axios from "axios";
 import { MessageRequest } from "../types/message";
 
 class MessageApi {
-    private apiUrl;
+    private apiUrl: string;
 
     constructor() {
-        this.apiUrl = 'http://222.255.238.163:4000/api';
+        this.apiUrl = process.env.REACT_APP_API_URL;
     }
 
     public async sendMessage({message, userId, chatId}: MessageRequest) {

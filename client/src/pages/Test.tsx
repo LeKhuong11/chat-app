@@ -1,8 +1,8 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import io from 'socket.io-client';
 
-const socket = io("http://222.255.238.163:4000");
+const socket = io(process.env.REACT_APP_BACKEND_URL);
 
 function Text() {
   const [messages, setMessages] = useState<string[]>([]);

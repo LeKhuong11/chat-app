@@ -56,7 +56,7 @@ export function ChatContextProvider({ children, user }: Props) {
     }, [currentChat])
 
     useEffect(() => {
-        const newSocket = io("http://222.255.238.163:4000");
+        const newSocket = io(process.env.REACT_APP_BACKEND_URL);
         newSocket.on('connect', () => {
             setSocket(newSocket);
             setIsSocketConnected(true);

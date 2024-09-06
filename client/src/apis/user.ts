@@ -1,13 +1,11 @@
 import axios from 'axios';
-import { UserLogin, UserRegister } from '../types/user'
-
+import { UserLogin, UserRegister } from '../types/user';
 
 class UserApi {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = process.env.API_URL || 'http://222.255.238.163:4000/api';
-    
+    this.apiUrl = process.env.REACT_APP_API_URL;
   }
 
   public async login({email, password}: UserLogin) {

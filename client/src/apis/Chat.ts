@@ -2,10 +2,10 @@ import axios from "axios";
 import { ChatRequest } from "../types/chat";
 
 class ChatApi {
-    private apiUrl;
+    private apiUrl: string;
 
     constructor() {
-        this.apiUrl = 'http://222.255.238.163:4000/api';
+        this.apiUrl = process.env.REACT_APP_API_URL;
     }
 
     public async createChat({ firstId, secondId }: ChatRequest ) {
