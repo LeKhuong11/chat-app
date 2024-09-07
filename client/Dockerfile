@@ -13,9 +13,6 @@ RUN npm install
 # Sao chép toàn bộ mã nguồn vào thư mục làm việc
 COPY . .
 
-# Biên dịch ứng dụng React (nếu cần)
-RUN npm run build
-
 # Expose cổng 3000
 EXPOSE 3000
 
